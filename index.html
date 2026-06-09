@@ -4424,7 +4424,8 @@ let currentPage='dashboard';
 function goPage(page){
   document.querySelectorAll('.page').forEach(p=>p.style.display='none');
   document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('on'));
-  document.getElementById('page-'+page).style.display='';
+  const pageEl=document.getElementById('page-'+page);
+  if(pageEl) pageEl.style.display='block';
   const navEl = document.getElementById('nav-'+page);
   if(navEl) navEl.classList.add('on');
   currentPage=page;
@@ -4475,7 +4476,9 @@ function render(){
 
 function renderPage(page){
   const el=document.getElementById('page-'+page);
-  if(!el||el.style.display==='none') return;
+  if(!el) return;
+  // For auction, always render if it's the current page regardless of display state
+  if(page!=='auction' && el.style.display==='none') return;
   switch(page){
     case 'dashboard': el.innerHTML=renderDashboard(); bindDashboard(); break;
     case 'players': el.innerHTML=renderPlayers(); bindPlayers(); break;
@@ -11815,10 +11818,10 @@ function renderAuctionPage() {
     return _renderAuctionPageInner();
   } catch(e) {
     console.error('[AUC] renderAuctionPage error:', e);
-    return `<div style="padding:40px 20px;text-align:center">
+    return `<div style="padding:40px 20px;text-align:center;color:var(--text)">
       <div style="font-size:36px;margin-bottom:12px">⚠️</div>
       <div style="font-family:var(--head);font-size:18px;font-weight:700;color:var(--red);margin-bottom:8px">Auction render error</div>
-      <div style="font-size:12px;color:var(--text3);font-family:var(--mono);word-break:break-all;max-width:320px;margin:0 auto">${escHtml(e.message)}</div>
+      <div style="font-size:12px;color:var(--text2);word-break:break-all;max-width:320px;margin:0 auto;padding:10px;background:var(--bg3);border-radius:8px">${e && e.message ? e.message : String(e)}</div>
       <button class="btn btn-outline btn-sm" style="margin-top:16px" onclick="renderPage('auction')">🔄 Retry</button>
     </div>`;
   }
