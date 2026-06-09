@@ -4425,11 +4425,12 @@ function goPage(page){
   document.querySelectorAll('.page').forEach(p=>p.style.display='none');
   document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('on'));
   const pageEl=document.getElementById('page-'+page);
-  if(pageEl) pageEl.style.display='block';
+  if(pageEl){ pageEl.style.display='block'; pageEl.style.minHeight='200px'; }
   const navEl = document.getElementById('nav-'+page);
   if(navEl) navEl.classList.add('on');
   currentPage=page;
-  renderPage(page);
+  // Small delay for auction to ensure DOM is ready
+  if(page==='auction'){ setTimeout(()=>renderPage(page),50); } else { renderPage(page); }
 }
 
 // ═══════════════════════════════════════════════════════
@@ -4477,8 +4478,7 @@ function render(){
 function renderPage(page){
   const el=document.getElementById('page-'+page);
   if(!el) return;
-  // For auction, always render if it's the current page regardless of display state
-  if(page!=='auction' && el.style.display==='none') return;
+  if(el.style.display==='none') return;
   switch(page){
     case 'dashboard': el.innerHTML=renderDashboard(); bindDashboard(); break;
     case 'players': el.innerHTML=renderPlayers(); bindPlayers(); break;
@@ -4486,7 +4486,15 @@ function renderPage(page){
     case 'scoreboard': el.innerHTML=renderScoreboard(); break;
     case 'history': el.innerHTML=renderHistory(); bindHistory(); break;
     case 'mypage': el.innerHTML=renderMyPage(); bindMyPage(); break;
-    case 'auction': el.innerHTML=renderAuctionPage(); bindAuctionPage(); break;
+    case 'auction':
+      try {
+        const ahtml = renderAuctionPage();
+        el.innerHTML = ahtml || '<div style="padding:30px;color:#fff;font-size:16px">⚠️ Auction returned empty. Check console.</div>';
+      } catch(err) {
+        el.innerHTML = '<div style="padding:30px;color:#ff3355;font-size:14px">⚠️ Auction crash: ' + (err && err.message ? err.message : String(err)) + '</div>';
+      }
+      try { bindAuctionPage(); } catch(e2) {}
+      break;
   }
 }
 
