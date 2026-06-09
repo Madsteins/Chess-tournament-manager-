@@ -4425,12 +4425,11 @@ function goPage(page){
   document.querySelectorAll('.page').forEach(p=>p.style.display='none');
   document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('on'));
   const pageEl=document.getElementById('page-'+page);
-  if(pageEl){ pageEl.style.display='block'; pageEl.style.minHeight='200px'; }
+  if(pageEl) pageEl.style.display='';
   const navEl = document.getElementById('nav-'+page);
   if(navEl) navEl.classList.add('on');
   currentPage=page;
-  // Small delay for auction to ensure DOM is ready
-  if(page==='auction'){ setTimeout(()=>renderPage(page),50); } else { renderPage(page); }
+  renderPage(page);
 }
 
 // ═══════════════════════════════════════════════════════
@@ -4477,8 +4476,7 @@ function render(){
 
 function renderPage(page){
   const el=document.getElementById('page-'+page);
-  if(!el) return;
-  if(el.style.display==='none') return;
+  if(!el||el.style.display==='none') return;
   switch(page){
     case 'dashboard': el.innerHTML=renderDashboard(); bindDashboard(); break;
     case 'players': el.innerHTML=renderPlayers(); bindPlayers(); break;
@@ -4489,11 +4487,11 @@ function renderPage(page){
     case 'auction':
       try {
         const ahtml = renderAuctionPage();
-        el.innerHTML = ahtml || '<div style="padding:30px;color:#fff;font-size:16px">⚠️ Auction returned empty. Check console.</div>';
+        el.innerHTML = ahtml || '<div style="padding:30px;color:#fff;font-size:16px">⚠️ Auction returned empty.</div>';
       } catch(err) {
-        el.innerHTML = '<div style="padding:30px;color:#ff3355;font-size:14px">⚠️ Auction crash: ' + (err && err.message ? err.message : String(err)) + '</div>';
+        el.innerHTML = '<div style="padding:30px;color:#ff3355;font-size:14px;background:#1a1a2e">⚠️ Auction crash: ' + (err && err.message ? err.message : String(err)) + '</div>';
       }
-      try { bindAuctionPage(); } catch(e2) {}
+      try { bindAuctionPage(); } catch(e2) { console.warn('bindAuctionPage error:',e2); }
       break;
   }
 }
