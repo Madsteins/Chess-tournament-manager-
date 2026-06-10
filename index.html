@@ -3233,7 +3233,7 @@ html[data-theme="dark"] .team-standing-card{
     <button class="bnav-btn" id="nav-mypage" onclick="goPage('mypage')"><span class="ico">♟</span>My Page</button>
     <button class="bnav-btn" id="nav-auction" onclick="goPage('auction')" style="position:relative"><span class="ico">🔨</span>Auction<span id="auctionNavDot" style="display:none;position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:#ff3355;animation:pulse 1.2s ease infinite"></span></button>
   </div><div id="pages">
-    <div id="page-dashboard" class="page"></div>
+    <div id="page-dashboard" class="page" style="display:block"></div>
     <div id="page-players" class="page" style="display:none"></div>
     <div id="page-pairings" class="page" style="display:none"></div>
     <div id="page-scoreboard" class="page" style="display:none"></div>
@@ -4425,7 +4425,7 @@ function goPage(page){
   document.querySelectorAll('.page').forEach(p=>p.style.display='none');
   document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('on'));
   const pageEl=document.getElementById('page-'+page);
-  if(pageEl) pageEl.style.display='';
+  if(pageEl) pageEl.style.display='block';
   const navEl = document.getElementById('nav-'+page);
   if(navEl) navEl.classList.add('on');
   currentPage=page;
@@ -4476,7 +4476,9 @@ function render(){
 
 function renderPage(page){
   const el=document.getElementById('page-'+page);
-  if(!el||el.style.display==='none') return;
+  // Only render if the page is explicitly shown (display:block set by goPage)
+  // display:none means hidden, display:'' means initial/reset state — both should skip
+  if(!el||el.style.display!=='block') return;
   switch(page){
     case 'dashboard': el.innerHTML=renderDashboard(); bindDashboard(); break;
     case 'players': el.innerHTML=renderPlayers(); bindPlayers(); break;
@@ -4487,9 +4489,10 @@ function renderPage(page){
     case 'auction':
       try {
         const ahtml = renderAuctionPage();
-        el.innerHTML = ahtml || '<div style="padding:30px;color:#fff;font-size:16px">⚠️ Auction returned empty.</div>';
+        el.innerHTML = ahtml || '<div style="padding:30px;color:var(--text);font-size:16px;text-align:center"><div style="font-size:36px;margin-bottom:12px">🔨</div><div>Auction module loading...</div><button class="btn btn-outline btn-sm" style="margin-top:12px" onclick="renderPage(\'auction\')">🔄 Retry</button></div>';
       } catch(err) {
-        el.innerHTML = '<div style="padding:30px;color:#ff3355;font-size:14px;background:#1a1a2e">⚠️ Auction crash: ' + (err && err.message ? err.message : String(err)) + '</div>';
+        console.error('[renderPage] auction crash:', err);
+        el.innerHTML = '<div style="padding:30px;color:#ff3355;font-size:14px;background:var(--bg3);border-radius:12px;margin:12px"><div style="font-size:24px;margin-bottom:8px">⚠️</div><div style="font-weight:700;margin-bottom:8px">Auction render error</div><div style="font-size:12px;word-break:break-all;padding:8px;background:var(--bg);border-radius:6px">' + (err && err.message ? err.message : String(err)) + '</div><button class="btn btn-outline btn-sm" style="margin-top:12px" onclick="renderPage(\'auction\')">🔄 Retry</button></div>';
       }
       try { bindAuctionPage(); } catch(e2) { console.warn('bindAuctionPage error:',e2); }
       break;
