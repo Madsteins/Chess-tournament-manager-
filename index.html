@@ -11489,10 +11489,10 @@ const AUC_INIT = {
 };
 
 let AUC = {};
-let _aucTimer = null;
-let _aucTimerSec = 0;
+window._aucTimer = window._aucTimer || null;
+window._aucTimerSec = window._aucTimerSec || 0;
 let _aucEarpieceMode = false;
-let _aucTab = 'live'; // 'live'|'pool'|'rosters'|'history'|'admin'
+window._aucTab = window._aucTab || 'live'; // 'live'|'pool'|'rosters'|'history'|'admin'
 let _aucRetentionTeam = null;
 
 function aucLoad() {
@@ -11580,12 +11580,12 @@ function aucPurseSpent(teamIdx) {
 // ── Timer ────────────────────────────────────────────────────────────────
 function aucStartTimer(duration) {
   aucStopTimer();
-  _aucTimerSec = duration;
+  window._aucTimerSec = duration;
   _renderAucTimer();
-  _aucTimer = setInterval(() => {
-    _aucTimerSec--;
+  window._aucTimer = setInterval(() => {
+    window._aucTimerSec--;
     _renderAucTimer();
-    if (_aucTimerSec <= 0) {
+    if (window._aucTimerSec <= 0) {
       aucStopTimer();
       aucTimeUp();
     }
@@ -11593,7 +11593,7 @@ function aucStartTimer(duration) {
 }
 
 function aucStopTimer() {
-  if (_aucTimer) { clearInterval(_aucTimer); _aucTimer = null; }
+  if (window._aucTimer) { clearInterval(window._aucTimer); window._aucTimer = null; }
 }
 
 function _renderAucTimer() {
@@ -11601,14 +11601,14 @@ function _renderAucTimer() {
   const num = document.getElementById('aucTimerNum');
   if (!ring || !num) return;
   const dur = AUC.currentBiddingMode === 'blind' ? AUC.blindBidDuration : AUC.timerDuration;
-  const pct = _aucTimerSec / dur;
+  const pct = window._aucTimerSec / dur;
   const r = 35, circ = 2 * Math.PI * r;
   const offset = circ * (1 - pct);
-  const color = _aucTimerSec <= 5 ? '#ff3355' : _aucTimerSec <= 10 ? '#F59E0B' : '#3B82F6';
+  const color = window._aucTimerSec <= 5 ? '#ff3355' : window._aucTimerSec <= 10 ? '#F59E0B' : '#3B82F6';
   ring.innerHTML = `<circle cx="40" cy="40" r="${r}" stroke="var(--border)" stroke-dasharray="${circ}" stroke-dashoffset="0"/>
     <circle cx="40" cy="40" r="${r}" stroke="${color}" stroke-dasharray="${circ}" stroke-dashoffset="${offset}" stroke-linecap="round"/>`;
-  num.textContent = _aucTimerSec;
-  num.className = 'auc-timer-num' + (_aucTimerSec <= 5 ? ' low' : '');
+  num.textContent = window._aucTimerSec;
+  num.className = 'auc-timer-num' + (window._aucTimerSec <= 5 ? ' low' : '');
 }
 
 function aucTimeUp() {
@@ -11883,16 +11883,16 @@ function _renderAuctionPageInner() {
   if (isAdmin) tabs.push({ id:'setup', icon:'👑', label:'Setup' });
 
   html += `<div class="auc-tabs">${tabs.map(t =>
-    `<button class="auc-tab${_aucTab===t.id?' on':''}" onclick="_aucTab='${t.id}';renderPage('auction')">${t.icon} ${t.label}</button>`
+    `<button class="auc-tab${window._aucTab===t.id?' on':''}" onclick="window._aucTab='${t.id}';renderPage('auction')">${t.icon} ${t.label}</button>`
   ).join('')}</div>`;
 
-  if (_aucTab === 'live')        html += _renderAucLiveIPL(cp, pool, myTeams, isAdmin, isActive);
-  else if (_aucTab === 'pool')   html += _renderAucPool(pool);
-  else if (_aucTab === 'rosters')html += _renderAucRosters();
-  else if (_aucTab === 'leaderboard') html += _renderAucLeaderboard();
-  else if (_aucTab === 'history')html += _renderAucHistory();
-  else if (_aucTab === 'admin' && isAdmin)  html += _renderAucAdmin(pool);
-  else if (_aucTab === 'setup' && isAdmin)  html += _renderAucSetup();
+  if (window._aucTab === 'live')        html += _renderAucLiveIPL(cp, pool, myTeams, isAdmin, isActive);
+  else if (window._aucTab === 'pool')   html += _renderAucPool(pool);
+  else if (window._aucTab === 'rosters')html += _renderAucRosters();
+  else if (window._aucTab === 'leaderboard') html += _renderAucLeaderboard();
+  else if (window._aucTab === 'history')html += _renderAucHistory();
+  else if (window._aucTab === 'admin' && isAdmin)  html += _renderAucAdmin(pool);
+  else if (window._aucTab === 'setup' && isAdmin)  html += _renderAucSetup();
 
   html += `</div>`;
 
@@ -12404,7 +12404,7 @@ function aucBidIPL(teamIdx, amount) {
   bidAreas.forEach(el => { el.classList.add('auc-bid-flash'); setTimeout(()=>el.classList.remove('auc-bid-flash'),300); });
   renderPage('auction');
   // Reset timer on new bid
-  if (_aucTimer && AUC.status === 'active') {
+  if (window._aucTimer && AUC.status === 'active') {
     aucStopTimer();
     aucStartTimer(AUC.timerDuration);
   }
@@ -12586,9 +12586,9 @@ function aucMarkSold() {
 function bindAuctionPage() {
   aucLoad();
   // If active and timer was running, restart at saved time
-  if (AUC.status === 'active' && aucCurrentPlayer() && !_aucTimer) {
-    if (_aucTimerSec <= 0) _aucTimerSec = AUC.timerDuration;
-    aucStartTimer(_aucTimerSec);
+  if (AUC.status === 'active' && aucCurrentPlayer() && !window._aucTimer) {
+    if (window._aucTimerSec <= 0) window._aucTimerSec = AUC.timerDuration;
+    aucStartTimer(window._aucTimerSec);
   }
 }
 
@@ -12636,7 +12636,7 @@ async function aucFbSubscribe() {
       const remote = snap.data();
       if (!remote) return;
       // Merge remote into AUC — remote wins except for local timer state
-      const localTimer = _aucTimerSec;
+      const localTimer = window._aucTimerSec;
       AUC = { ...AUC_INIT, ...remote };
       // Remove Firestore meta keys
       delete AUC._updatedAt; delete AUC._updatedBy;
@@ -13005,9 +13005,9 @@ function aucShowCustomBid(teamIdx, currentBid, purse) {
 function _renderAucTimerHTML() {
   const dur = AUC.timerDuration;
   const r = 35, circ = 2 * Math.PI * r;
-  const pct = _aucTimerSec / dur;
+  const pct = window._aucTimerSec / dur;
   const offset = circ * (1 - pct);
-  const sec = _aucTimerSec;
+  const sec = window._aucTimerSec;
   const color = sec <= 5 ? '#ff3355' : sec <= 10 ? '#F59E0B' : '#3B82F6';
   return `<div class="auc-timer-wrap">
     <svg id="aucTimerSvg" width="80" height="80" viewBox="0 0 80 80" style="transform:rotate(-90deg)">
@@ -13267,7 +13267,7 @@ function _renderAucAdmin(pool) {
       <input type="number" class="fb-input" style="width:80px;font-size:14px;font-weight:700" value="${AUC.timerDuration}"
         onchange="AUC.timerDuration=Math.max(10,+this.value||30);aucSave();fbToast('Timer: '+AUC.timerDuration+'s','success')">
       <button class="btn btn-xs btn-outline" onclick="aucStartTimer(AUC.timerDuration)" ${!isActive?'disabled':''}>▶ Restart</button>
-      <button class="btn btn-xs btn-outline" onclick="aucStopTimer();_aucTimerSec=0;renderPage('auction')" ${!isActive?'disabled':''}>⏹ Stop</button>
+      <button class="btn btn-xs btn-outline" onclick="aucStopTimer();window._aucTimerSec=0;renderPage('auction')" ${!isActive?'disabled':''}>⏹ Stop</button>
     </div>
   </div>`;
 
@@ -13319,33 +13319,12 @@ function _renderAucAdmin(pool) {
 aucLoad();
 
 // ══════════════════════════════════════════════════════════════════
-//  GLOBAL EXPORTS — expose module-scoped functions/vars to window
-//  Required because <script type="module"> has its own scope
+//  GLOBAL EXPORTS — expose module-scoped functions to window
 // ══════════════════════════════════════════════════════════════════
-
-// My Page
 window.renderMyPage           = renderMyPage;
 window.bindMyPage             = bindMyPage;
-
-// Auction tab state — must be a getter/setter so onclick="_aucTab='pool'" works
-Object.defineProperty(window, '_aucTab', {
-  get() { return _aucTab; },
-  set(v) { _aucTab = v; },
-  configurable: true
-});
-
-// Auction render & bind
 window.renderAuctionPage      = renderAuctionPage;
 window.bindAuctionPage        = bindAuctionPage;
-
-// Auction state
-Object.defineProperty(window, 'AUC', {
-  get() { return AUC; },
-  set(v) { AUC = v; },
-  configurable: true
-});
-
-// Auction functions
 window.aucLoad                = aucLoad;
 window.aucSave                = aucSave;
 window.aucSet                 = aucSet;
