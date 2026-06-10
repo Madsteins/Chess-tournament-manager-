@@ -13318,6 +13318,65 @@ function _renderAucAdmin(pool) {
 // Init auction on load
 aucLoad();
 
+// ══════════════════════════════════════════════════════════════════
+//  GLOBAL EXPORTS — expose module-scoped functions to window
+//  (required because this is a <script type="module"> block)
+// ══════════════════════════════════════════════════════════════════
+window.renderAuctionPage      = renderAuctionPage;
+window.bindAuctionPage        = bindAuctionPage;
+window.aucLoad                = aucLoad;
+window.aucSave                = aucSave;
+window.aucSet                 = aucSet;
+window.aucInitPurses          = aucInitPurses;
+window.aucGetPool             = aucGetPool;
+window.aucCurrentPlayer       = aucCurrentPlayer;
+window.aucPlayerStatus        = aucPlayerStatus;
+window.aucTeamRoster          = aucTeamRoster;
+window.aucPurseSpent          = aucPurseSpent;
+window.aucStartTimer          = aucStartTimer;
+window.aucStopTimer           = aucStopTimer;
+window.aucTimeUp              = aucTimeUp;
+window.aucMarkUnsold          = aucMarkUnsold;
+window.aucMarkSold            = aucMarkSold;
+window.aucRevealPlayer        = aucRevealPlayer;
+window.aucSubmitBlindBid      = aucSubmitBlindBid;
+window.aucRevealBlindBids     = aucRevealBlindBids;
+window.aucEndSweep            = aucEndSweep;
+window.aucSetRetention        = aucSetRetention;
+window.aucFireConfetti        = aucFireConfetti;
+window.aucGetMyRole           = aucGetMyRole;
+window.aucCanBid              = aucCanBid;
+window.aucMyBiddingTeams      = aucMyBiddingTeams;
+window.aucShowRecap           = aucShowRecap;
+window.aucBidIPL              = aucBidIPL;
+window.aucBid                 = aucBid;
+window.aucSaveRole            = aucSaveRole;
+window.aucAddCoCaptain        = aucAddCoCaptain;
+window.aucConfirmAddCoCaptain = aucConfirmAddCoCaptain;
+window.aucRemoveCoCaptain     = aucRemoveCoCaptain;
+window.aucSetCoPermission     = aucSetCoPermission;
+window.aucOpenStream          = aucOpenStream;
+window.aucCloseStream         = aucCloseStream;
+window.aucOpenCeremony        = aucOpenCeremony;
+window.aucCloseCeremony       = aucCloseCeremony;
+window.aucReAuction           = aucReAuction;
+window.aucFbDocId             = aucFbDocId;
+window.aucFbUnsubscribe       = aucFbUnsubscribe;
+window.aucStartAuction        = aucStartAuction;
+window.aucNextPlayer          = aucNextPlayer;
+window.aucPauseAuction        = aucPauseAuction;
+window.aucResumeAuction       = aucResumeAuction;
+window.aucEndAuction          = aucEndAuction;
+window.aucSkipPlayer          = aucSkipPlayer;
+window.aucUndoLastSale        = aucUndoLastSale;
+window.aucRestartTier         = aucRestartTier;
+window.aucConfirmRestartTier  = aucConfirmRestartTier;
+window.aucStartUnsoldRound    = aucStartUnsoldRound;
+window.aucResetAuction        = aucResetAuction;
+window.aucConfirmReset        = aucConfirmReset;
+window.aucShowCustomBid       = aucShowCustomBid;
+window.AUC                    = AUC;
+
 </script>
 </body>
 </html>
