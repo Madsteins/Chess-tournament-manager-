@@ -245,7 +245,7 @@ body{
 .splash-title{font-family:var(--head);font-size:clamp(28px,8vw,52px);font-weight:700;letter-spacing:1px;background:linear-gradient(135deg,#3B82F6,#A855F7,#F59E0B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .splash-sub{font-size:clamp(11px,2.5vw,14px);color:rgba(148,163,184,0.7);letter-spacing:7px;text-transform:uppercase;font-family:var(--head)}
 .splash-bar-wrap{width:min(200px,60vw);height:3px;background:rgba(30,45,69,0.8);border-radius:3px;overflow:hidden}
-.splash-bar{height:100%;background:linear-gradient(90deg,#3B82F6,#A855F7,#F59E0B);border-radius:3px;transition:width .05s linear;width:0%}
+.splash-bar{height:100%;background:linear-gradient(90deg,#3B82F6,#A855F7,#E8A838,#3B82F6);background-size:200% 100%;border-radius:3px;transition:width .05s linear;width:0%;animation:shimmerSlide 1.5s linear infinite}
 
 /* ════════════════════════════════════════════
    HEADER — Mobile: compact 50px, Desktop: 60px
@@ -581,13 +581,14 @@ html[data-theme="dark"] .bnav{
 }
 .bnav-btn .ico{font-size:clamp(18px,5vw,22px);line-height:1}
 .bnav-btn.on{
-  color:var(--blue);
-  border-top-color:var(--blue);
-  background:linear-gradient(180deg,rgba(59,130,246,0.12),transparent);
+  color:var(--gold);
+  border-top-color:var(--gold);
+  background:linear-gradient(180deg,rgba(232,168,56,0.12),transparent);
+  text-shadow:0 0 12px rgba(232,168,56,0.5);
 }
 html[data-theme="dark"] .bnav-btn.on{
-  background:linear-gradient(180deg,rgba(59,130,246,0.15),transparent);
-  text-shadow:0 0 12px rgba(59,130,246,0.6);
+  background:linear-gradient(180deg,rgba(232,168,56,0.15),transparent);
+  text-shadow:0 0 12px rgba(232,168,56,0.6);
 }
 .bnav-btn:hover{color:var(--text);background:var(--bg3)}
 
@@ -1301,7 +1302,7 @@ html[data-theme="dark"] .team-standing-card{
     font-size:15px;
     justify-content:flex-start;
   }
-  .bnav-btn.on{border-left-color:var(--blue)!important;background:linear-gradient(90deg,rgba(59,130,246,0.12),transparent);color:var(--blue)}
+  .bnav-btn.on{border-left-color:var(--gold)!important;background:linear-gradient(90deg,rgba(232,168,56,0.12),transparent);color:var(--gold);text-shadow:0 0 12px rgba(232,168,56,0.5)}
   .bnav-btn .ico{font-size:20px}
 
   /* App layout shifts to side-by-side */
@@ -2460,9 +2461,9 @@ html[data-theme="dark"] .team-standing-card{
 /* ── User pill in header ── */
 .fb-user-pill{
   display:flex;align-items:center;gap:6px;
-  background:rgba(30,42,69,0.8);
-  border:1px solid rgba(59,130,246,0.2);
-  border-radius:20px;padding:3px 10px 3px 4px;
+  background:linear-gradient(135deg,rgba(59,130,246,0.12),rgba(168,85,247,0.06));
+  border:1px solid rgba(59,130,246,0.25);
+  border-radius:20px;padding:4px 12px 4px 5px;
   cursor:pointer;transition:all .15s;flex-shrink:0;
 }
 .fb-user-pill:hover{border-color:rgba(59,130,246,0.5)}
@@ -2474,8 +2475,8 @@ html[data-theme="dark"] .team-standing-card{
 }
 .fb-user-name{font-size:12px;font-weight:700;color:#CBD5E1;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .fb-role-badge{
-  font-size:10px;font-weight:800;padding:1px 6px;border-radius:10px;
-  font-family:'Rajdhani',system-ui,sans-serif;letter-spacing:.5px;flex-shrink:0;
+  font-size:9px;font-weight:800;padding:2px 8px;border-radius:8px;
+  font-family:'Rajdhani',system-ui,sans-serif;letter-spacing:.8px;flex-shrink:0;
 }
 .fb-role-superadmin{background:rgba(245,158,11,0.2);color:#F59E0B;border:1px solid rgba(245,158,11,0.35)}
 .fb-role-admin{background:rgba(59,130,246,0.2);color:#3B82F6;border:1px solid rgba(59,130,246,0.35)}
@@ -2488,8 +2489,8 @@ html[data-theme="dark"] .team-standing-card{
 #fbAdminMgr.open{display:flex}
 .fbam-box{
   width:100%;max-width:560px;max-height:85vh;
-  background:#111827;border:1px solid rgba(59,130,246,0.25);
-  border-radius:18px;overflow:hidden;display:flex;flex-direction:column;
+  background:linear-gradient(160deg,rgba(10,20,38,0.99),rgba(6,12,24,0.99));border:1px solid rgba(59,130,246,0.22);
+  border-radius:22px;overflow:hidden;display:flex;flex-direction:column;
   box-shadow:0 24px 80px rgba(0,0,0,0.8);
 }
 .fbam-hdr{
@@ -2952,6 +2953,1185 @@ html[data-theme="dark"] .team-standing-card{
   .auc-player-ava{width:100px;height:100px;font-size:36px}
   .auc-purse-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
 }
+
+/* ════════ PREMIUM ESPORTS DESIGN LAYER v25 ════════ */
+/* ═══════════════════════════════════════════════════════════════
+   CHESS LEAGUE PREMIUM DESIGN SYSTEM — v25 ESPORTS OVERHAUL
+   Injected on top of existing styles for maximum compatibility
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── ENHANCED DARK THEME TOKENS ── */
+html[data-theme="dark"],
+:root {
+  --bg:        #081224;
+  --bg2:       #0D1A2E;
+  --bg3:       #0F2040;
+  --bg4:       #162A4A;
+  --border:    rgba(59,130,246,0.12);
+  --border2:   rgba(59,130,246,0.22);
+
+  /* Richer gold */
+  --gold:      #E8A838;
+  --gold2:     #F5C842;
+
+  /* Premium tier colors */
+  --tier-s:    #E8A838;
+  --tier-a:    #A855F7;
+  --tier-b:    #3B82F6;
+  --tier-c:    #22C55E;
+
+  /* Glow system */
+  --glow-gold:   0 0 20px rgba(232,168,56,0.3),0 0 60px rgba(232,168,56,0.1);
+  --glow-blue:   0 0 20px rgba(59,130,246,0.3),0 0 60px rgba(59,130,246,0.1);
+  --glow-purple: 0 0 20px rgba(168,85,247,0.3),0 0 60px rgba(168,85,247,0.1);
+  --glow-green:  0 0 20px rgba(34,197,94,0.3);
+
+  /* Premium glass */
+  --glass:          rgba(8,18,36,0.88);
+  --glass-border:   rgba(59,130,246,0.18);
+  --glass-highlight: rgba(255,255,255,0.04);
+
+  /* Shadow system */
+  --shadow:    0 8px 40px rgba(0,0,0,0.7),0 2px 8px rgba(0,0,0,0.5);
+  --shadow-sm: 0 2px 16px rgba(0,0,0,0.5);
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.4),0 1px 0 rgba(255,255,255,0.04) inset;
+}
+
+/* ── ANIMATED BACKGROUND ── */
+html[data-theme="dark"] body {
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 5%, rgba(59,130,246,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 80% at 90% 95%, rgba(168,85,247,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(232,168,56,0.02) 0%, transparent 60%),
+    linear-gradient(160deg, #081224 0%, #0D1A2E 40%, #081C30 70%, #070F1E 100%);
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM HEADER
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .header {
+  background: linear-gradient(180deg,
+    rgba(8,18,36,0.98) 0%,
+    rgba(10,22,42,0.96) 100%
+  );
+  border-bottom: 1px solid rgba(59,130,246,0.15);
+  box-shadow:
+    0 1px 0 rgba(59,130,246,0.12),
+    0 4px 30px rgba(0,0,0,0.5),
+    0 0 60px rgba(59,130,246,0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+html[data-theme="dark"] .header::after {
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(59,130,246,0.6) 20%,
+    rgba(168,85,247,0.6) 50%,
+    rgba(232,168,56,0.6) 80%,
+    transparent 100%
+  );
+  opacity: 0.7;
+  height: 1.5px;
+}
+
+.header-logo {
+  filter: drop-shadow(0 0 8px rgba(232,168,56,0.5));
+  animation: logoPulse 4s ease-in-out infinite;
+}
+@keyframes logoPulse {
+  0%,100% { filter: drop-shadow(0 0 8px rgba(232,168,56,0.4)); }
+  50%     { filter: drop-shadow(0 0 16px rgba(232,168,56,0.7)); }
+}
+.header-title {
+  background: linear-gradient(135deg, #F1F5F9 0%, #94A3B8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.5px;
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM BOTTOM NAV
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .bnav {
+  background: linear-gradient(0deg,
+    rgba(6,12,24,0.99) 0%,
+    rgba(8,18,36,0.98) 100%
+  );
+  border-top: 1px solid rgba(59,130,246,0.12);
+  box-shadow:
+    0 -1px 0 rgba(59,130,246,0.1),
+    0 -8px 30px rgba(0,0,0,0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+html[data-theme="dark"] .bnav-btn.on {
+  color: var(--gold);
+  border-top-color: var(--gold);
+  background: linear-gradient(180deg, rgba(232,168,56,0.12), transparent);
+  text-shadow: 0 0 12px rgba(232,168,56,0.6);
+}
+@media(min-width:768px) {
+  html[data-theme="dark"] .bnav-btn.on {
+    border-left-color: var(--gold) !important;
+    background: linear-gradient(90deg, rgba(232,168,56,0.12), transparent);
+    color: var(--gold);
+    text-shadow: 0 0 12px rgba(232,168,56,0.5);
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM CARDS — Glassmorphism
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .card {
+  background: linear-gradient(145deg,
+    rgba(13,26,46,0.95) 0%,
+    rgba(10,20,38,0.9) 100%
+  );
+  border: 1px solid rgba(59,130,246,0.12);
+  box-shadow: var(--shadow-card);
+  border-radius: 20px;
+}
+html[data-theme="dark"] .card::before {
+  background: linear-gradient(145deg,
+    rgba(255,255,255,0.04) 0%,
+    transparent 60%
+  );
+}
+html[data-theme="dark"] .card:hover {
+  border-color: rgba(59,130,246,0.25);
+  box-shadow:
+    0 8px 40px rgba(0,0,0,0.5),
+    0 0 0 1px rgba(59,130,246,0.2),
+    0 0 20px rgba(59,130,246,0.05);
+  transform: translateY(-2px);
+}
+
+/* Glass card premium */
+html[data-theme="dark"] .card-glass {
+  background: rgba(8,18,36,0.7);
+  border: 1px solid rgba(59,130,246,0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.4),
+    0 1px 0 rgba(255,255,255,0.05) inset;
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM BUTTONS
+   ══════════════════════════════════════════════════════ */
+.btn {
+  border-radius: 10px;
+  letter-spacing: 0.3px;
+  transition: all 0.18s cubic-bezier(0.4,0,0.2,1);
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: scale(0.96) translateY(0); }
+
+.btn-gold {
+  background: linear-gradient(135deg, #E8A838, #C98A1A);
+  border-color: #E8A838;
+  color: #0B0E14;
+  box-shadow: 0 4px 15px rgba(232,168,56,0.3);
+}
+.btn-gold:hover {
+  background: linear-gradient(135deg, #F5C842, #E8A838);
+  box-shadow: 0 6px 25px rgba(232,168,56,0.45);
+}
+.btn-blue {
+  background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+  border-color: #3B82F6;
+  box-shadow: 0 4px 15px rgba(59,130,246,0.3);
+}
+.btn-blue:hover { box-shadow: 0 6px 25px rgba(59,130,246,0.45); }
+.btn-green {
+  background: linear-gradient(135deg, #22C55E, #15803D);
+  border-color: #22C55E;
+  color: #0B0E14;
+  box-shadow: 0 4px 15px rgba(34,197,94,0.25);
+}
+.btn-purple {
+  background: linear-gradient(135deg, #A855F7, #7C3AED);
+  border-color: #A855F7;
+  box-shadow: 0 4px 15px rgba(168,85,247,0.3);
+}
+.btn-red, .btn-danger:hover {
+  background: linear-gradient(135deg, #FF3355, #CC1133);
+  border-color: #FF3355;
+  box-shadow: 0 4px 15px rgba(255,51,85,0.25);
+}
+html[data-theme="dark"] .btn-outline {
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(59,130,246,0.25);
+  color: var(--text2);
+}
+html[data-theme="dark"] .btn-outline:hover {
+  background: rgba(59,130,246,0.1);
+  border-color: rgba(59,130,246,0.4);
+  color: var(--text);
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM TIER BADGES — Glowing
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .badge {
+  border-radius: 8px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+/* Tier-specific glow on badges */
+[style*="F59E0B"] .badge,
+.badge[style*="F59E0B"],
+.badge[style*="f5a623"],
+.badge[style*="E8A8"] {
+  box-shadow: 0 0 8px rgba(232,168,56,0.4);
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM PLAYER CARDS
+   ══════════════════════════════════════════════════════ */
+.player-card-v16 {
+  border-radius: 20px !important;
+  transition: transform 0.2s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s ease !important;
+}
+html[data-theme="dark"] .player-card-v16:hover {
+  transform: translateY(-3px) scale(1.005);
+  box-shadow:
+    0 12px 40px rgba(0,0,0,0.5),
+    0 0 0 1px rgba(59,130,246,0.2);
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM STAT CARDS
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .scard {
+  background: linear-gradient(145deg,
+    rgba(13,26,46,0.95),
+    rgba(10,20,38,0.9)
+  );
+  border: 1px solid rgba(59,130,246,0.12);
+  box-shadow: var(--shadow-card);
+  border-radius: 16px;
+  transition: all 0.2s ease;
+}
+html[data-theme="dark"] .scard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(59,130,246,0.3);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+}
+.scard-num {
+  font-family: var(--head);
+  background: linear-gradient(135deg, var(--scard-accent,var(--blue)), rgba(255,255,255,0.9));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM MODAL
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .overlay {
+  background: rgba(4,8,18,0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+html[data-theme="dark"] .mbox {
+  background: linear-gradient(160deg,
+    rgba(13,26,46,0.99) 0%,
+    rgba(8,15,30,0.99) 100%
+  );
+  border: 1px solid rgba(59,130,246,0.2);
+  box-shadow:
+    0 24px 80px rgba(0,0,0,0.7),
+    0 0 0 1px rgba(59,130,246,0.1),
+    0 0 60px rgba(59,130,246,0.05);
+  border-radius: 24px;
+}
+html[data-theme="dark"] .mbox::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(59,130,246,0.5),
+    rgba(168,85,247,0.5),
+    rgba(232,168,56,0.5),
+    transparent
+  );
+  border-radius: 24px 24px 0 0;
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM TABS
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .tabs {
+  background: rgba(8,18,36,0.8);
+  border: 1px solid rgba(59,130,246,0.1);
+  border-radius: 12px;
+  padding: 4px;
+}
+html[data-theme="dark"] .tab.on {
+  background: linear-gradient(135deg,
+    rgba(59,130,246,0.2),
+    rgba(168,85,247,0.1)
+  );
+  border: 1px solid rgba(59,130,246,0.3);
+  color: var(--text);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM INPUTS
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea {
+  background: rgba(8,18,36,0.8);
+  border: 1.5px solid rgba(59,130,246,0.2);
+  border-radius: 10px;
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+html[data-theme="dark"] input:focus,
+html[data-theme="dark"] select:focus,
+html[data-theme="dark"] textarea:focus {
+  border-color: rgba(59,130,246,0.6);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1), 0 0 20px rgba(59,130,246,0.1);
+  background: rgba(10,22,42,0.9);
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM SECTION TITLES
+   ══════════════════════════════════════════════════════ */
+.sec-title {
+  font-family: var(--display);
+  letter-spacing: 0.5px;
+}
+html[data-theme="dark"] .sec-title {
+  background: linear-gradient(135deg, #F1F5F9 30%, #94A3B8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM LIVE BADGE — Enhanced
+   ══════════════════════════════════════════════════════ */
+.live-badge {
+  background: rgba(239,68,68,0.12);
+  border: 1px solid rgba(239,68,68,0.35);
+  box-shadow: 0 0 12px rgba(239,68,68,0.15);
+}
+.live-dot { box-shadow: 0 0 6px rgba(239,68,68,0.8); }
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM LOCK BANNER
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .lock-banner {
+  background: linear-gradient(135deg,
+    rgba(245,166,35,0.08),
+    rgba(245,166,35,0.03)
+  );
+  border: 1px solid rgba(232,168,56,0.3);
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(232,168,56,0.05);
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM BANNER (SCORE BAR)
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .banner {
+  background: linear-gradient(180deg,
+    rgba(8,18,36,0.98),
+    rgba(10,22,42,0.96)
+  );
+  border-bottom: 1px solid rgba(59,130,246,0.1);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM TOOLTIP — val-chip enhancements
+   ══════════════════════════════════════════════════════ */
+.val-chip { border-radius: 20px; font-weight: 700; }
+.val-ok   { box-shadow: 0 0 8px rgba(0,212,106,0.2); }
+.val-err  { box-shadow: 0 0 8px rgba(255,51,85,0.2); }
+.val-warn { box-shadow: 0 0 8px rgba(245,166,35,0.2); }
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM PILLS
+   ══════════════════════════════════════════════════════ */
+.pill { border-radius: 20px; font-weight: 700; }
+html[data-theme="dark"] .pill-blue  { box-shadow: 0 0 8px rgba(59,130,246,0.2); }
+html[data-theme="dark"] .pill-gold  { box-shadow: 0 0 8px rgba(232,168,56,0.2); }
+html[data-theme="dark"] .pill-green { box-shadow: 0 0 8px rgba(34,197,94,0.2); }
+html[data-theme="dark"] .pill-purple{ box-shadow: 0 0 8px rgba(168,85,247,0.2); }
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM QUICK ACTION BUTTONS
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .qa-btn {
+  background: linear-gradient(145deg,
+    rgba(13,26,46,0.95),
+    rgba(10,20,38,0.9)
+  );
+  border: 1px solid rgba(59,130,246,0.12);
+  border-radius: 16px;
+  box-shadow: var(--shadow-card);
+}
+html[data-theme="dark"] .qa-btn:hover {
+  background: linear-gradient(145deg,
+    rgba(59,130,246,0.15),
+    rgba(13,26,46,0.95)
+  );
+  border-color: rgba(59,130,246,0.3);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  transform: translateY(-2px);
+  color: var(--text);
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM ACTIONS PANEL (HAMBURGER DRAWER)
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .actions-panel {
+  background: rgba(8,16,32,0.98);
+  border: 1px solid rgba(59,130,246,0.15);
+  box-shadow:
+    -8px 0 40px rgba(0,0,0,0.6),
+    0 0 0 1px rgba(59,130,246,0.08);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 20px;
+}
+html[data-theme="dark"] .panel-item:hover {
+  background: rgba(59,130,246,0.08);
+  border-left-color: var(--blue);
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM SCROLLBAR
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(59,130,246,0.2);
+  border-radius: 4px;
+}
+html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(59,130,246,0.35);
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM PLAYER TABLE
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .ptable-wrap {
+  background: rgba(8,18,36,0.8);
+  border: 1px solid rgba(59,130,246,0.12);
+  border-radius: 16px;
+}
+html[data-theme="dark"] .ptable th {
+  background: rgba(10,22,42,0.9);
+  border-bottom: 1px solid rgba(59,130,246,0.12);
+}
+html[data-theme="dark"] .ptable tr:hover td {
+  background: rgba(59,130,246,0.05);
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM PROGRESS BAR
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .prog {
+  background: rgba(8,18,36,0.8);
+  border: 1px solid rgba(59,130,246,0.1);
+  border-radius: 4px;
+}
+.prog-fill {
+  background: linear-gradient(90deg, #3B82F6, #A855F7) !important;
+  box-shadow: 0 0 8px rgba(59,130,246,0.4);
+  border-radius: 4px;
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM ACCORDION
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .acc {
+  border: 1px solid rgba(59,130,246,0.12);
+  border-radius: 14px;
+  overflow: hidden;
+}
+html[data-theme="dark"] .acc-head {
+  background: rgba(10,22,42,0.9);
+}
+html[data-theme="dark"] .acc-head:hover {
+  background: rgba(13,28,52,0.95);
+}
+html[data-theme="dark"] .acc-body {
+  background: rgba(8,18,36,0.7);
+  border-top: 1px solid rgba(59,130,246,0.1);
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM CLOCK
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .clock {
+  background: rgba(8,18,36,0.9);
+  border: 2px solid rgba(59,130,246,0.25);
+  box-shadow: 0 0 12px rgba(59,130,246,0.15);
+  border-radius: 12px;
+}
+.clock.active {
+  box-shadow: 0 0 12px rgba(34,197,94,0.3) !important;
+}
+.clock.low {
+  box-shadow: 0 0 12px rgba(255,51,85,0.3) !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM SPLASH
+   ══════════════════════════════════════════════════════ */
+#splash {
+  background: linear-gradient(160deg,
+    #050D1E 0%,
+    #081224 40%,
+    #060F1C 100%
+  );
+}
+.splash-title {
+  background: linear-gradient(135deg, #3B82F6, #A855F7, #E8A838);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px rgba(59,130,246,0.3));
+}
+.splash-knight {
+  filter: drop-shadow(0 0 30px rgba(232,168,56,0.5));
+}
+.splash-bar {
+  background: linear-gradient(90deg, #3B82F6, #A855F7, #E8A838);
+  box-shadow: 0 0 10px rgba(59,130,246,0.5);
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM TOURNAMENT BANNER CHIPS
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .team-chip {
+  background: rgba(10,22,42,0.9);
+  border-radius: 10px;
+  backdrop-filter: blur(8px);
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM AUTH GATE ENHANCEMENTS
+   ══════════════════════════════════════════════════════ */
+#fbAuthGate {
+  background: radial-gradient(ellipse at center,
+    #0A0F1E 0%,
+    #060C18 60%,
+    #040810 100%
+  );
+}
+.fb-cc-card {
+  background: rgba(10,18,34,0.98);
+  border: 2px solid rgba(232,168,56,0.4);
+  box-shadow:
+    0 0 30px rgba(232,168,56,0.15),
+    0 16px 60px rgba(0,0,0,0.8),
+    0 0 0 1px rgba(232,168,56,0.1) inset;
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+}
+.fb-card {
+  background: rgba(10,18,34,0.9);
+  border: 1px solid rgba(59,130,246,0.15);
+  border-radius: 18px;
+  backdrop-filter: blur(16px);
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM AUCTION SECTION ENHANCEMENTS
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .auc-player-showcase {
+  background: linear-gradient(160deg,
+    rgba(13,26,46,0.98),
+    rgba(8,15,30,0.95)
+  );
+  border: 1px solid rgba(59,130,246,0.15);
+  box-shadow:
+    0 0 40px rgba(59,130,246,0.05),
+    0 12px 40px rgba(0,0,0,0.5);
+  border-radius: 20px;
+}
+
+/* Tier-colored glows for auction cards */
+html[data-theme="dark"] [data-tier="S"],
+html[data-theme="dark"] .tier-s-glow {
+  box-shadow: 0 0 20px rgba(232,168,56,0.2) !important;
+  border-color: rgba(232,168,56,0.25) !important;
+}
+html[data-theme="dark"] [data-tier="A"],
+html[data-theme="dark"] .tier-a-glow {
+  box-shadow: 0 0 20px rgba(168,85,247,0.2) !important;
+  border-color: rgba(168,85,247,0.25) !important;
+}
+html[data-theme="dark"] [data-tier="B"],
+html[data-theme="dark"] .tier-b-glow {
+  box-shadow: 0 0 20px rgba(59,130,246,0.2) !important;
+  border-color: rgba(59,130,246,0.25) !important;
+}
+html[data-theme="dark"] [data-tier="C"],
+html[data-theme="dark"] .tier-c-glow {
+  box-shadow: 0 0 20px rgba(34,197,94,0.2) !important;
+  border-color: rgba(34,197,94,0.25) !important;
+}
+
+/* Bid button — premium gold CTA */
+html[data-theme="dark"] .auc-bid-btn {
+  background: linear-gradient(135deg, #E8A838, #C98A1A) !important;
+  box-shadow:
+    0 6px 25px rgba(232,168,56,0.4),
+    0 0 0 1px rgba(232,168,56,0.2) !important;
+  border-radius: 14px !important;
+  color: #0B0E14 !important;
+  font-weight: 800 !important;
+  transition: all 0.2s ease !important;
+}
+html[data-theme="dark"] .auc-bid-btn:hover {
+  background: linear-gradient(135deg, #F5C842, #E8A838) !important;
+  box-shadow:
+    0 8px 35px rgba(232,168,56,0.55),
+    0 0 0 2px rgba(232,168,56,0.3) !important;
+  transform: translateY(-2px) !important;
+}
+html[data-theme="dark"] .auc-bid-btn:disabled {
+  background: rgba(30,42,60,0.8) !important;
+  box-shadow: none !important;
+  color: rgba(255,255,255,0.2) !important;
+}
+
+/* Increment buttons */
+html[data-theme="dark"] .auc-increment-btn {
+  background: rgba(8,18,36,0.9) !important;
+  border: 1px solid rgba(59,130,246,0.2) !important;
+  border-radius: 10px !important;
+  transition: all 0.15s ease !important;
+}
+html[data-theme="dark"] .auc-increment-btn:hover {
+  background: rgba(59,130,246,0.15) !important;
+  border-color: rgba(59,130,246,0.4) !important;
+}
+html[data-theme="dark"] .auc-increment-btn.active {
+  background: linear-gradient(135deg,rgba(59,130,246,0.3),rgba(168,85,247,0.2)) !important;
+  border-color: rgba(59,130,246,0.5) !important;
+  box-shadow: 0 0 10px rgba(59,130,246,0.2) !important;
+}
+
+/* Live auction pulse */
+html[data-theme="dark"] .auc-timer-ring {
+  filter: drop-shadow(0 0 8px rgba(255,51,85,0.5));
+}
+
+/* Recent bids panel */
+html[data-theme="dark"] .auc-bid-log {
+  background: rgba(8,18,36,0.8) !important;
+  border: 1px solid rgba(59,130,246,0.1) !important;
+  border-radius: 14px !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM PAIRING CARDS
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .pairing-card-anim {
+  background: linear-gradient(145deg,
+    rgba(13,26,46,0.95),
+    rgba(10,20,38,0.9)
+  );
+  border: 1px solid rgba(59,130,246,0.12);
+  border-radius: 18px;
+  box-shadow: var(--shadow-card);
+}
+
+/* Captain match premium styling */
+html[data-theme="dark"] .captain-match-card {
+  background: linear-gradient(135deg,
+    rgba(168,85,247,0.12),
+    rgba(59,130,246,0.08)
+  ) !important;
+  border: 1px solid rgba(168,85,247,0.25) !important;
+  box-shadow:
+    0 0 20px rgba(168,85,247,0.1),
+    0 8px 30px rgba(0,0,0,0.4) !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM SCOREBOARD
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .score-hero {
+  background: linear-gradient(135deg,
+    rgba(13,26,46,0.98),
+    rgba(8,15,30,0.95)
+  );
+  border: 1px solid rgba(59,130,246,0.15);
+  border-radius: 20px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM TABLE — tr hover row glow
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] tr:hover td {
+  background: rgba(59,130,246,0.05) !important;
+}
+html[data-theme="dark"] th {
+  background: rgba(8,18,36,0.8);
+  border-bottom: 1px solid rgba(59,130,246,0.12);
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM TOGGLE
+   ══════════════════════════════════════════════════════ */
+html[data-theme="dark"] .tog {
+  background: rgba(8,18,36,0.9);
+  border-color: rgba(59,130,246,0.2);
+}
+.tog.on {
+  background: linear-gradient(135deg, #22C55E, #15803D) !important;
+  border-color: #22C55E !important;
+  box-shadow: 0 0 10px rgba(34,197,94,0.3);
+}
+
+/* ══════════════════════════════════════════════════════
+   NEW ESPORTS ELEMENTS
+   ══════════════════════════════════════════════════════ */
+
+/* Premium Tier Badge Glow Rings */
+.tier-glow-s { box-shadow: 0 0 0 2px rgba(232,168,56,0.3), 0 0 15px rgba(232,168,56,0.2); }
+.tier-glow-a { box-shadow: 0 0 0 2px rgba(168,85,247,0.3), 0 0 15px rgba(168,85,247,0.2); }
+.tier-glow-b { box-shadow: 0 0 0 2px rgba(59,130,246,0.3), 0 0 15px rgba(59,130,246,0.2); }
+.tier-glow-c { box-shadow: 0 0 0 2px rgba(34,197,94,0.3), 0 0 15px rgba(34,197,94,0.2); }
+
+/* Captain crown glow */
+.captain-ring {
+  box-shadow: 0 0 0 3px rgba(168,85,247,0.4), 0 0 20px rgba(168,85,247,0.2) !important;
+  border-color: rgba(168,85,247,0.6) !important;
+}
+
+/* Live auction glow pulse */
+@keyframes liveGlow {
+  0%,100% { box-shadow: 0 0 10px rgba(255,51,85,0.4); }
+  50%      { box-shadow: 0 0 25px rgba(255,51,85,0.7); }
+}
+.live-glow { animation: liveGlow 1.5s ease-in-out infinite; }
+
+/* Gold shimmer on #1 rank */
+@keyframes goldShimmer {
+  0% { background-position: -100% 0; }
+  100% { background-position: 200% 0; }
+}
+.rank-gold {
+  background: linear-gradient(90deg,
+    rgba(232,168,56,0.2) 0%,
+    rgba(245,200,66,0.4) 40%,
+    rgba(232,168,56,0.2) 80%
+  );
+  background-size: 200% 100%;
+  animation: goldShimmer 3s linear infinite;
+}
+
+/* Esports banner glow line */
+.banner-glow-line {
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent, var(--blue), var(--purple), var(--gold), transparent
+  );
+  opacity: 0.6;
+}
+
+/* Premium notification dot */
+.notif-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 6px rgba(255,51,85,0.8);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+/* Admin badge chip */
+.admin-badge {
+  background: linear-gradient(135deg, rgba(232,168,56,0.2), rgba(232,168,56,0.1));
+  border: 1px solid rgba(232,168,56,0.4);
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--gold);
+  letter-spacing: 0.5px;
+  box-shadow: 0 0 8px rgba(232,168,56,0.15);
+}
+
+/* Premium horizontal leaderboard scroller */
+.leaderboard-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 8px 2px 12px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.leaderboard-scroll::-webkit-scrollbar { display: none; }
+
+/* Leaderboard player chip */
+.lb-chip {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.lb-chip:hover { transform: translateY(-3px); }
+.lb-chip-rank {
+  font-family: var(--head);
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--text3);
+  letter-spacing: 0.5px;
+}
+.lb-chip-rank.gold { color: var(--gold); }
+.lb-chip-rank.silver { color: #94A3B8; }
+.lb-chip-rank.bronze { color: #B87333; }
+.lb-chip-ava {
+  position: relative;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--border);
+}
+.lb-chip-ava.top1 {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(232,168,56,0.3), 0 0 15px rgba(232,168,56,0.3);
+  width: 68px; height: 68px;
+}
+.lb-chip-ava.top2 {
+  border-color: #94A3B8;
+  box-shadow: 0 0 8px rgba(148,163,184,0.2);
+  width: 60px; height: 60px;
+}
+.lb-chip-ava.top3 {
+  border-color: #B87333;
+  box-shadow: 0 0 8px rgba(184,115,51,0.2);
+}
+.lb-chip-name {
+  font-family: var(--head);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text2);
+  text-align: center;
+  max-width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lb-chip-rating {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+}
+
+/* Crown overlay for top 3 */
+.lb-crown {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  filter: drop-shadow(0 0 4px rgba(232,168,56,0.8));
+  z-index: 2;
+}
+
+/* Pill filter tabs (esports style) */
+.pill-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.pill-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(59,130,246,0.2);
+  background: rgba(8,18,36,0.8);
+  color: var(--text2);
+  font-family: var(--head);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.pill-tab:hover {
+  background: rgba(59,130,246,0.1);
+  border-color: rgba(59,130,246,0.35);
+  color: var(--text);
+}
+.pill-tab.on {
+  background: linear-gradient(135deg, rgba(59,130,246,0.25), rgba(168,85,247,0.15));
+  border-color: rgba(59,130,246,0.45);
+  color: var(--text);
+  box-shadow: 0 0 10px rgba(59,130,246,0.15);
+}
+.pill-tab.gold-on {
+  background: linear-gradient(135deg, rgba(232,168,56,0.25), rgba(245,200,66,0.1));
+  border-color: rgba(232,168,56,0.45);
+  color: var(--gold);
+  box-shadow: 0 0 10px rgba(232,168,56,0.15);
+}
+
+/* Dashboard hero stat — very large number */
+.hero-stat {
+  font-family: var(--display);
+  font-size: clamp(48px,12vw,88px);
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(135deg, #E8A838, #F5C842, #E8A838);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px rgba(232,168,56,0.3));
+}
+
+/* Featured player card — large spotlight */
+.featured-player-card {
+  position: relative;
+  background: linear-gradient(145deg,
+    rgba(13,26,46,0.98),
+    rgba(8,15,30,0.95)
+  );
+  border: 1px solid rgba(59,130,246,0.2);
+  border-radius: 22px;
+  overflow: hidden;
+  padding: 20px;
+}
+.featured-player-card::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 60%;
+  height: 100%;
+  background: radial-gradient(ellipse, rgba(59,130,246,0.08), transparent 70%);
+  pointer-events: none;
+}
+.featured-player-card::after {
+  content: '';
+  position: absolute;
+  bottom: -40%;
+  left: -10%;
+  width: 50%;
+  height: 80%;
+  background: radial-gradient(ellipse, rgba(168,85,247,0.06), transparent 70%);
+  pointer-events: none;
+}
+
+/* Bid purse card */
+.purse-card {
+  background: linear-gradient(135deg,
+    rgba(34,197,94,0.1),
+    rgba(13,26,46,0.95)
+  );
+  border: 1px solid rgba(34,197,94,0.2);
+  border-radius: 16px;
+  padding: 12px 14px;
+}
+.purse-card.low {
+  background: linear-gradient(135deg,
+    rgba(255,51,85,0.1),
+    rgba(13,26,46,0.95)
+  );
+  border-color: rgba(255,51,85,0.25);
+}
+
+/* Match result row colors */
+.match-win  { border-left: 3px solid var(--green) !important; }
+.match-loss { border-left: 3px solid var(--red) !important; }
+.match-draw { border-left: 3px solid var(--gold) !important; }
+
+/* Board assignment card */
+.board-card {
+  position: relative;
+  background: linear-gradient(145deg,
+    rgba(13,26,46,0.95),
+    rgba(10,20,38,0.9)
+  );
+  border: 1px solid rgba(59,130,246,0.12);
+  border-radius: 18px;
+  padding: 14px 16px;
+  transition: all 0.2s ease;
+}
+.board-card:hover {
+  border-color: rgba(59,130,246,0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+}
+.board-number {
+  font-family: var(--display);
+  font-size: 32px;
+  font-weight: 800;
+  color: rgba(59,130,246,0.3);
+  line-height: 1;
+  position: absolute;
+  top: 10px;
+  right: 14px;
+}
+
+/* Esports-style form input glow */
+html[data-theme="dark"] .fb-input:focus {
+  border-color: rgba(232,168,56,0.6) !important;
+  box-shadow: 0 0 0 3px rgba(232,168,56,0.1), 0 0 20px rgba(232,168,56,0.08) !important;
+}
+
+/* Premium validation chip animation on checking */
+.val-chip.val-checking {
+  background: rgba(59,130,246,0.12) !important;
+  border-color: rgba(59,130,246,0.35) !important;
+  box-shadow: 0 0 8px rgba(59,130,246,0.2) !important;
+}
+
+/* Gradient text utility */
+.text-gradient-gold {
+  background: linear-gradient(135deg, #E8A838, #F5C842);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.text-gradient-blue {
+  background: linear-gradient(135deg, #3B82F6, #06B6D4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.text-gradient-purple {
+  background: linear-gradient(135deg, #A855F7, #EC4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Section divider with glow */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(59,130,246,0.3),
+    rgba(168,85,247,0.2),
+    transparent
+  );
+  margin: 16px 0;
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM ANIMATION KEYFRAMES
+   ══════════════════════════════════════════════════════ */
+@keyframes shimmerSlide {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes floatUp {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes glowPulse {
+  0%,100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+@keyframes tierReveal {
+  from { opacity: 0; transform: scale(0.9) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.tier-reveal { animation: tierReveal 0.3s cubic-bezier(0.4,0,0.2,1) both; }
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE PREMIUM ADJUSTMENTS
+   ══════════════════════════════════════════════════════ */
+@media(max-width:480px) {
+  .lb-chip-ava.top1 { width: 58px; height: 58px; }
+  .lb-chip-ava.top2 { width: 52px; height: 52px; }
+  .lb-chip-ava      { width: 46px; height: 46px; }
+  .featured-player-card { padding: 14px; }
+  html[data-theme="dark"] .card { border-radius: 16px; }
+  html[data-theme="dark"] .mbox { border-radius: 20px; }
+}
+
+@media(min-width:768px) {
+  .leaderboard-scroll { gap: 14px; padding: 10px 4px 14px; }
+  .lb-chip-ava.top1 { width: 80px; height: 80px; }
+  .lb-chip-ava.top2 { width: 68px; height: 68px; }
+  .lb-chip-ava      { width: 60px; height: 60px; }
+  .lb-chip-name { font-size: 12px; max-width: 88px; }
+}
+
+/* ══════════════════════════════════════════════════════
+   ESPORTS-GRADE MICRO INTERACTIONS
+   ══════════════════════════════════════════════════════ */
+.btn { position: relative; overflow: hidden; }
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+.btn:hover::after { opacity: 1; }
+
+/* Card inner highlight */
+html[data-theme="dark"] .card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 10%,
+    rgba(255,255,255,0.06) 50%,
+    transparent 90%
+  );
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════════════
+   PREMIUM PLAYER AVATAR RING STYLES
+   ══════════════════════════════════════════════════════ */
+.ava-ring-gold {
+  box-shadow:
+    0 0 0 2px rgba(232,168,56,0.5),
+    0 0 12px rgba(232,168,56,0.3) !important;
+  border-color: var(--gold) !important;
+}
+.ava-ring-purple {
+  box-shadow:
+    0 0 0 2px rgba(168,85,247,0.5),
+    0 0 12px rgba(168,85,247,0.3) !important;
+  border-color: var(--purple) !important;
+}
+.ava-ring-blue {
+  box-shadow:
+    0 0 0 2px rgba(59,130,246,0.5),
+    0 0 12px rgba(59,130,246,0.3) !important;
+  border-color: var(--blue) !important;
+}
+.ava-ring-green {
+  box-shadow:
+    0 0 0 2px rgba(34,197,94,0.5),
+    0 0 12px rgba(34,197,94,0.3) !important;
+  border-color: var(--green) !important;
+}
+
+
 </style>
 </head>
 <body>
@@ -3086,7 +4266,7 @@ html[data-theme="dark"] .team-standing-card{
 <div id="splash">
   <div class="splash-knight">♞</div>
   <div class="splash-title">Chess Tournament</div>
-  <div class="splash-sub">Manager v24 · Firebase</div>
+  <div class="splash-sub">Chess League · v25 Premium</div>
   <div class="splash-bar-wrap"><div class="splash-bar" id="splashBar"></div></div>
 </div>
 
@@ -3099,7 +4279,7 @@ html[data-theme="dark"] .team-standing-card{
       <div class="fb-user-pill" onclick="fbShowUserMenu()" id="fbPillBtn">
         <div class="fb-user-ava" id="fbPillAva" style="background:rgba(59,130,246,0.25);color:#3B82F6">?</div>
         <span class="fb-user-name" id="fbPillName">User</span>
-        <span class="fb-role-badge" id="fbPillRole" style="display:none"></span>
+        <span class="fb-role-badge admin-badge" id="fbPillRole" style="display:none"></span>
       </div>
     </div>
     <button
@@ -4501,6 +5681,92 @@ function renderPage(page){
 // ═══════════════════════════════════════════════════════
 //  DASHBOARD PAGE
 // ═══════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════════════════
+//  PREMIUM UI HELPERS — v25 Esports Design Layer
+// ══════════════════════════════════════════════════════════════════
+
+function renderTopLeaderboard() {
+  const {pts} = calcScores();
+  const active = S.players.filter(p => !p.deleted);
+  if (!active.length) return '';
+
+  // Sort by points then by rating
+  const sorted = [...active].sort((a,b) => {
+    const pa = pts[a.id]||0, pb = pts[b.id]||0;
+    if (pb !== pa) return pb - pa;
+    return (b.rating||0) - (a.rating||0);
+  });
+
+  const top10 = sorted.slice(0, Math.min(10, sorted.length));
+  const TC_MAP = {S:'#E8A838',A:'#A855F7',B:'#3B82F6',C:'#22C55E',unrated:'#64748B'};
+  const CROWN = ['👑','🥈','🥉'];
+
+  if (!top10.length) return '';
+
+  let chips = top10.map((p, i) => {
+    const tc = TEAM_C[ownerTeam(p)] || '#3B82F6';
+    const tierC = TC_MAP[p.tier] || '#64748B';
+    const url = _avatarCache[p.name];
+    const isCap = p.captain;
+    const rankClass = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
+    const labelClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+    const crown = i < 3 ? `<div class="lb-crown">${CROWN[i]}</div>` : '';
+    const avaInner = (url && url !== '' && url !== 'err')
+      ? `<img src="${escHtml(url)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block">`
+      : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:800;font-size:${i===0?'22px':'18px'};background:${tc}22;color:${tc}">${(p.name||'?')[0].toUpperCase()}</div>`;
+
+    return `<div class="lb-chip" onclick="openPlayerProfile && openPlayerProfile(${p.id})" title="${escHtml(p.name)} · ${p.tier} Tier · ⚡${p.rating}">
+      <div class="lb-chip-rank ${labelClass}">#${i+1}${isCap ? ' 👑' : ''}</div>
+      <div class="lb-chip-ava ${rankClass}" style="border-color:${isCap ? '#A855F7' : tierC};box-shadow:0 0 0 2px ${tierC}44,0 0 12px ${tierC}22">
+        ${crown}${avaInner}
+      </div>
+      <div class="lb-chip-name">${escHtml((p.name||'?').split(' ')[0])}</div>
+      <div class="lb-chip-rating" style="color:${tierC}">⚡${p.rating||'?'}</div>
+    </div>`;
+  }).join('');
+
+  return `<div class="card" style="padding:12px 14px;margin-bottom:8px;position:relative;overflow:visible">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <div style="font-family:var(--display);font-size:13px;font-weight:800;letter-spacing:0.5px;background:linear-gradient(135deg,#E8A838,#F5C842);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
+        🏆 TOP PERFORMERS
+      </div>
+      <span class="pill pill-gold" style="font-size:9px">${top10.length} players</span>
+    </div>
+    <div class="leaderboard-scroll">${chips}</div>
+  </div>`;
+}
+
+function renderPremiumStatCards(t0, t1, activePlayers, done, allM, comp) {
+  const total = activePlayers.length;
+  const cap0 = getCaptain(0), cap1 = getCaptain(1);
+  const matchesLeft = allM.filter(m => m.result === '*').length;
+  const totalGames = activePlayers.reduce((s,p) => s + ((p.wins||0)+(p.losses||0)+(p.draws||0)), 0);
+
+  return `<div class="stat-grid" style="margin-bottom:8px">
+    <div class="scard" style="--scard-accent:var(--gold)">
+      <div class="scard-icon">⚡</div>
+      <div class="scard-num">${total}</div>
+      <div class="scard-lbl">Players</div>
+    </div>
+    <div class="scard" style="--scard-accent:var(--blue)">
+      <div class="scard-icon">⚔️</div>
+      <div class="scard-num">${done}</div>
+      <div class="scard-lbl">Matches Done</div>
+    </div>
+    <div class="scard" style="--scard-accent:var(--purple)">
+      <div class="scard-icon">🏆</div>
+      <div class="scard-num">${S.round}</div>
+      <div class="scard-lbl">Round</div>
+    </div>
+    <div class="scard" style="--scard-accent:var(--green)">
+      <div class="scard-icon">📊</div>
+      <div class="scard-num">${comp}%</div>
+      <div class="scard-lbl">Complete</div>
+    </div>
+  </div>`;
+}
+
 function renderDashboard(){
   const allM=[...S.rounds.flat(),...S.pairings];
   const t0=teamScore(0),t1=teamScore(1);
@@ -4517,6 +5783,9 @@ function renderDashboard(){
     ${cap0&&cap1?`<br><span style="font-size:11px">👑 <strong>${escHtml(cap0.name)}</strong> (${escHtml(S.teams[0])}) vs <strong>${escHtml(cap1.name)}</strong> (${escHtml(S.teams[1])})</span>`:`<br><span style="font-size:11px;color:var(--red)">⚠️ ${!cap0?S.teams[0]+' missing Captain — ':''}${!cap1?S.teams[1]+' missing Captain':''}</span>`}
   </div>`;
   if(S.locked) html+=`<div class="lock-banner" style="border-color:var(--red)">🚫 Pairings Locked — unlock to regenerate</div>`;
+
+  // ── Premium Leaderboard ──
+  html += renderTopLeaderboard();
 
   // ── Tournament progress bar ──────────────────────────────────────────────
   if(allM.length){
@@ -5121,11 +6390,32 @@ function renderPlayers(){
 
   // ── Sticky captain strip ──
   if(cap0||cap1){
-    html+=`<div style="position:sticky;top:0;z-index:20;background:var(--bg);padding:6px 0 8px;margin-bottom:4px;border-bottom:1px solid var(--border)">
-      <div class="flex gap10 ic wrap">
-        ${cap0?`<div class="flex ic gap6">${playerAva(cap0,28)}<span style="background:${TEAM_C[0]}22;color:${TEAM_C[0]};border:1px solid ${TEAM_C[0]}44;border-radius:6px;padding:2px 9px;font-size:12px;font-weight:700;font-family:var(--head)">👑 ${escHtml(cap0.name)}</span><span class="fs11 c3">${escHtml(S.teams[0])}</span></div>`:''}
-        ${cap0&&cap1?`<span class="c3 fs11">vs</span>`:''}
-        ${cap1?`<div class="flex ic gap6">${playerAva(cap1,28)}<span style="background:${TEAM_C[1]}22;color:${TEAM_C[1]};border:1px solid ${TEAM_C[1]}44;border-radius:6px;padding:2px 9px;font-size:12px;font-weight:700;font-family:var(--head)">👑 ${escHtml(cap1.name)}</span><span class="fs11 c3">${escHtml(S.teams[1])}</span></div>`:''}
+    html+=`<div style="position:sticky;top:0;z-index:20;padding:8px 0 10px;margin-bottom:6px">
+      <div class="card" style="padding:10px 14px;margin-bottom:0;border:1px solid rgba(168,85,247,0.2);background:linear-gradient(135deg,rgba(168,85,247,0.08),rgba(59,130,246,0.04))">
+        <div style="font-size:9px;font-family:var(--head);letter-spacing:1.5px;color:var(--purple);font-weight:800;margin-bottom:6px;text-transform:uppercase">⚔ Captain Match-Up</div>
+        <div class="flex gap12 ic wrap">
+          ${cap0?`<div class="flex ic gap8">
+            <div style="position:relative">
+              ${playerAva(cap0,36)}
+              <div style="position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center;font-size:8px;border:1.5px solid var(--bg)">♔</div>
+            </div>
+            <div>
+              <div style="font-family:var(--head);font-weight:800;font-size:13px;color:${TEAM_C[0]}">${escHtml(cap0.name)}</div>
+              <div style="font-size:10px;color:var(--text3)">${escHtml(S.teams[0])} · ⚡${cap0.rating}</div>
+            </div>
+          </div>`:''}
+          ${cap0&&cap1?`<div style="font-family:var(--head);font-weight:800;font-size:11px;color:var(--text3);letter-spacing:1px">VS</div>`:''}
+          ${cap1?`<div class="flex ic gap8">
+            <div style="position:relative">
+              ${playerAva(cap1,36)}
+              <div style="position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center;font-size:8px;border:1.5px solid var(--bg)">♔</div>
+            </div>
+            <div>
+              <div style="font-family:var(--head);font-weight:800;font-size:13px;color:${TEAM_C[1]}">${escHtml(cap1.name)}</div>
+              <div style="font-size:10px;color:var(--text3)">${escHtml(S.teams[1])} · ⚡${cap1.rating}</div>
+            </div>
+          </div>`:''}
+        </div>
       </div>
     </div>`;
   }
@@ -5153,9 +6443,20 @@ function renderPlayers(){
     ${okCount===S.players.length&&S.players.length?`<span class="val-chip val-ok">✓ All clear</span>`:''}
   </div>`;
 
-  // ── Search & filters ──
-  html+=`<div class="flex gap6 mb12 wrap">
-    <input placeholder="🔍 Search players…" value="${escHtml(playerSearch)}" oninput="playerSearch=this.value;renderPage('players')" style="flex:1;min-width:100px;max-width:200px">
+  // ── Search & filters (Premium pill style) ──
+  html+=`<div style="margin-bottom:10px">
+    <input placeholder="🔍 Search players by name…" value="${escHtml(playerSearch)}" oninput="playerSearch=this.value;renderPage('players')" style="width:100%;max-width:100%;margin-bottom:8px;border-radius:12px">
+    <div class="pill-tabs">
+      <button class="pill-tab${playerFilterTier==='all'?' on':''}" onclick="playerFilterTier='all';renderPage('players')">All Tiers</button>
+      <button class="pill-tab${playerFilterTier==='S'?' gold-on':''}" style="${playerFilterTier==='S'?'':'border-color:rgba(232,168,56,0.2);color:#E8A838'}" onclick="playerFilterTier='S';renderPage('players')">🥇 S Tier</button>
+      <button class="pill-tab${playerFilterTier==='A'?' on':''}" style="${playerFilterTier==='A'?'':'border-color:rgba(168,85,247,0.2);color:#A855F7'}" onclick="playerFilterTier='A';renderPage('players')">💜 A Tier</button>
+      <button class="pill-tab${playerFilterTier==='B'?' on':''}" style="${playerFilterTier==='B'?'':'border-color:rgba(59,130,246,0.2);color:#3B82F6'}" onclick="playerFilterTier='B';renderPage('players')">💙 B Tier</button>
+      <button class="pill-tab${playerFilterTier==='C'?' on':''}" style="${playerFilterTier==='C'?'':'border-color:rgba(34,197,94,0.2);color:#22C55E'}" onclick="playerFilterTier='C';renderPage('players')">💚 C Tier</button>
+      ${S.teams.map((t,i)=>`<button class="pill-tab${playerFilterTeam==i?' on':''}" style="${playerFilterTeam==i?'':'border-color:'+TEAM_C[i]+'33;color:'+TEAM_C[i]}"  onclick="playerFilterTeam=playerFilterTeam===${i}?'all':${i};renderPage('players')">${escHtml(t)}</button>`).join('')}
+    </div>
+  </div>`;
+  // hidden selects kept for backward compat
+  html+=`<div style="display:none">
     <select onchange="playerFilterTier=this.value;renderPage('players')" style="width:auto;flex:0 0 auto">
       <option value="all"${playerFilterTier==='all'?' selected':''}>All Tiers</option>
       ${TIERS.map(t=>`<option value="${t}"${playerFilterTier===t?' selected':''}>${TI[t]} ${t}</option>`).join('')}
@@ -11472,6 +12773,11 @@ const AUC_INIT = {
   retentionCosts: { slot1: 800, slot2: 500 }, // configurable
   retentionLocked: false,
   teamPurses: {},
+  // Minimum roster protection (Bug Fix #25)
+  minRosterSize: 8,
+  minBidPerPlayer: 100,
+  // Current tier tracking
+  currentTier: 'S',
   // IPL team role config: {teamIdx: {captain:{uid,name}, viceCaptain:{uid,name}, coCaptains:[{uid,name,permission}]}}
   teamRoles: {},
   history: [],
@@ -11612,14 +12918,24 @@ function _renderAucTimer() {
 
 function aucTimeUp() {
   if (AUC.currentBiddingMode === 'blind') {
-    // Reveal blind bids
     aucRevealBlindBids();
     return;
   }
   if (AUC.currentBid > 0 && AUC.currentBidTeam !== null) {
-    aucMarkSold();
+    // Trigger IPL-style Going Once / Going Twice / SOLD sequence
+    aucStartGoingOnce();
   } else {
     aucMarkUnsold();
+  }
+}
+
+// When a new bid arrives during going-once/twice, reset the sequence
+function aucOnNewBidReset() {
+  if (_aucGoingPhase > 0) {
+    aucResetGoingSequence();
+    // restart timer
+    aucStopTimer();
+    aucStartTimer(AUC.timerDuration);
   }
 }
 
@@ -11638,8 +12954,8 @@ function aucMarkUnsold() {
   fbToast(`${p.name} — UNSOLD`, 'info');
 }
 
-function aucRevealPlayer(poolIdx) {
-  if (AUC.status !== 'active') return;
+function aucRevealPlayer(poolIdx, skipAnimation) {
+  if (AUC.status !== 'active' && AUC.status !== 'unsold-round') return;
   if (aucPoolPlayer(poolIdx) === null) return;
   const p = aucPoolPlayer(poolIdx);
   if (aucPlayerStatus(String(p.id)) !== 'pool') {
@@ -11647,18 +12963,28 @@ function aucRevealPlayer(poolIdx) {
     return;
   }
   aucStopTimer();
+  aucResetGoingSequence();
   const isBlind = AUC.currentBiddingMode === 'blind';
-  aucSet(a => ({
-    ...a,
-    currentPlayerIdx: poolIdx,
-    currentBid: 0,
-    currentBidTeam: null,
-    blindBids: {},
-    blindBidsRevealed: false,
-  }));
-  AUC.history.unshift({ type: 'REVEAL', playerName: p.name, ts: new Date().toLocaleTimeString() });
-  aucSave();
-  aucStartTimer(isBlind ? AUC.blindBidDuration : AUC.timerDuration);
+
+  const doReveal = () => {
+    aucSet(a => ({
+      ...a,
+      currentPlayerIdx: poolIdx,
+      currentBid: 0,
+      currentBidTeam: null,
+      blindBids: {},
+      blindBidsRevealed: false,
+    }));
+    AUC.history.unshift({ type: 'REVEAL', playerName: p.name, ts: new Date().toLocaleTimeString() });
+    aucSave();
+    aucStartTimer(isBlind ? AUC.blindBidDuration : AUC.timerDuration);
+  };
+
+  if (!skipAnimation) {
+    aucShowRevealAnimation(doReveal);
+  } else {
+    doReveal();
+  }
 }
 
 // ── Blind bids ────────────────────────────────────────────────────────────
@@ -11780,44 +13106,18 @@ function aucFireConfetti() {
 // ── ELO Currency helpers ──────────────────────────────────────────
 function eloFmt(n){ return '⚡'+n; }  // prefix all currency with ⚡ ELO
 
-// ── Role helpers ──────────────────────────────────────────────────
-function aucGetMyRole(teamIdx) {
-  const user = window.fbCurrentUser;
-  if (!user) return null;
-  const roles = AUC.teamRoles[teamIdx];
-  if (!roles) return null;
-  if (roles.captain && (roles.captain.uid === user.uid || roles.captain.email === user.email)) return 'captain';
-  if (roles.viceCaptain && (roles.viceCaptain.uid === user.uid || roles.viceCaptain.email === user.email)) return 'vice';
-  if (roles.coCaptains && roles.coCaptains.find(c => c.uid === user.uid)) {
-    const co = roles.coCaptains.find(c => c.uid === user.uid);
-    return co.permission === 'view' ? null : 'co';
-  }
-  return null;
-}
-
-function aucCanBid(teamIdx) {
-  if (window.fbIsAdmin && window.fbIsAdmin()) return true;
-  const role = aucGetMyRole(teamIdx);
-  return role === 'captain' || role === 'vice' || role === 'co';
-}
+// ── Role helpers — delegated to Firestore-bound versions (defined in sync block below) ──
+// Note: aucGetMyRole, aucCanBid, aucMyBiddingTeams are defined as functions below.
+// These window assignments ensure they are callable before the function declarations run.
+if (typeof aucGetMyRole === 'undefined')    window.aucGetMyRole    = function(teamIdx) { return null; };
+if (typeof aucCanBid === 'undefined')       window.aucCanBid       = function(teamIdx) { return window.fbIsAdmin ? window.fbIsAdmin() : false; };
+if (typeof aucMyBiddingTeams === 'undefined') window.aucMyBiddingTeams = function() { return window.fbIsAdmin && window.fbIsAdmin() ? S.teams.map((_,i)=>i) : []; };
 
 function aucRoleBadge(role) {
   if (role === 'captain')  return '<span class="auc-role-captain">♔ Captain</span>';
   if (role === 'vice')     return '<span class="auc-role-vice">★ Vice Captain</span>';
   if (role === 'co')       return '<span class="auc-role-co">◉ Co-Captain</span>';
   return '';
-}
-
-function aucMyBiddingTeams() {
-  // Returns array of teamIdx this user can bid for
-  const user = window.fbCurrentUser;
-  if (!user) return [];
-  const isAdmin = window.fbIsAdmin && window.fbIsAdmin();
-  const teams = [];
-  S.teams.forEach((_, ti) => {
-    if (isAdmin || aucCanBid(ti)) teams.push(ti);
-  });
-  return teams;
 }
 
 // ── Render auction page ──────────────────────────────────────────
@@ -11970,12 +13270,108 @@ function _renderAucLiveIPL(cp, pool, myTeams, isAdmin, isActive) {
   } else if (AUC.status === 'ended') {
     const totalSold = Object.keys(AUC.soldPlayers).length;
     const totalSpent = Object.values(AUC.soldPlayers).reduce((s,v) => s+(v.price||0), 0);
-    html += `<div class="auc-player-card" style="padding:32px 20px">
-      <div style="font-size:48px;margin-bottom:12px">🏁</div>
-      <div style="font-family:var(--head);font-size:22px;font-weight:800;color:var(--green)">Auction Complete!</div>
-      <div style="font-size:13px;color:var(--text2);margin-top:8px">${totalSold} players sold · ⚡${totalSpent} ELO spent total</div>
-      <button class="btn btn-gold btn-sm" style="margin-top:12px" onclick="aucShowRecap()">📊 View Recap</button>
-    </div>`;
+    const pool2 = aucGetPool();
+    // Build team summaries for completion screen
+    const teamRows = S.teams.map((team, ti) => {
+      const roster = aucTeamRoster(ti);
+      const spent = aucPurseSpent(ti);
+      const avgRating = roster.length ? Math.round(roster.reduce((s,p) => s+(p.rating||0),0)/roster.length) : 0;
+      const remaining = AUC.teamPurses[ti] ?? AUC.pursePerTeam;
+      return { ti, team, roster, spent, avgRating, remaining };
+    });
+    const strongest = [...teamRows].sort((a,b) => b.avgRating - a.avgRating)[0];
+    const bestValue = [...teamRows].sort((a,b) => {
+      const av = a.spent > 0 ? a.avgRating / a.spent : 0;
+      const bv = b.spent > 0 ? b.avgRating / b.spent : 0;
+      return bv - av;
+    })[0];
+    const mvp = AUC.mvp;
+    const allSales = AUC.history.filter(h => h.type === 'SOLD');
+    const bargain = allSales.length ? allSales.reduce((min, h) => (!min || (h.price||0) < (min.price||0)) ? h : min, null) : null;
+    const rankIcon = ['🥇','🥈','🥉'];
+
+    html += `<div style="background:linear-gradient(135deg,rgba(245,158,11,0.12),rgba(168,85,247,0.08));border:1px solid rgba(245,158,11,0.3);border-radius:20px;padding:20px;margin-bottom:12px;text-align:center">
+      <div style="font-size:48px;margin-bottom:8px">🏆</div>
+      <div style="font-family:var(--head);font-size:28px;font-weight:800;color:var(--gold);letter-spacing:2px">AUCTION COMPLETED!</div>
+      <div style="font-size:13px;color:var(--text2);margin-top:6px">${totalSold} players sold · ⚡${totalSpent} ELO spent total</div>
+    </div>
+    <div style="font-family:var(--head);font-size:11px;color:var(--text3);letter-spacing:1px;margin-bottom:8px">FINAL TEAM ROSTERS</div>
+    <div style="display:grid;gap:8px;margin-bottom:12px">
+      ${teamRows.sort((a,b) => b.avgRating - a.avgRating).map((r, i) => {
+        const tc = TEAM_C_GET(r.ti);
+        const pct = AUC.pursePerTeam > 0 ? Math.round(r.remaining/AUC.pursePerTeam*100) : 0;
+        const barC = pct > 50 ? '#22C55E' : pct > 25 ? '#EAB308' : '#EF4444';
+        return `<div style="background:var(--bg3);border:1px solid ${tc}33;border-radius:12px;padding:12px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <span style="font-size:18px">${rankIcon[i]||''}</span>
+            <div style="font-family:var(--head);font-weight:800;color:${tc};font-size:15px;flex:1">${escHtml(r.team)}</div>
+            <div style="font-size:11px;color:var(--text3)">${r.roster.length} players</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px">
+            <div style="text-align:center;padding:5px;background:var(--bg);border-radius:6px">
+              <div style="font-size:9px;color:var(--text3)">ELO SPENT</div>
+              <div style="font-weight:800;font-size:13px;color:var(--red)">⚡${r.spent}</div>
+            </div>
+            <div style="text-align:center;padding:5px;background:var(--bg);border-radius:6px">
+              <div style="font-size:9px;color:var(--text3)">AVG RATING</div>
+              <div style="font-weight:800;font-size:13px;color:${tc}">⚡${r.avgRating}</div>
+            </div>
+            <div style="text-align:center;padding:5px;background:var(--bg);border-radius:6px">
+              <div style="font-size:9px;color:var(--text3)">REMAINING</div>
+              <div style="font-weight:800;font-size:13px;color:${barC}">⚡${r.remaining}</div>
+            </div>
+          </div>
+          <div style="height:4px;background:var(--bg4);border-radius:4px;overflow:hidden">
+            <div style="height:100%;background:${barC};width:${pct}%;border-radius:4px;transition:width .3s"></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div style="font-family:var(--head);font-size:11px;color:var(--text3);letter-spacing:1px;margin-bottom:8px">🏅 AWARDS</div>
+    <div style="display:grid;gap:6px;margin-bottom:12px">
+      ${mvp ? `<div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:10px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">💎</span>
+        <div style="flex:1">
+          <div style="font-size:10px;color:var(--gold)">MOST EXPENSIVE PLAYER</div>
+          <div style="font-weight:700;font-size:13px">${escHtml(mvp.playerName)}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-weight:800;color:var(--gold)">⚡${mvp.price}</div>
+          <div style="font-size:10px;color:var(--text3)">${escHtml(S.teams[mvp.teamIdx]||'')}</div>
+        </div>
+      </div>` : ''}
+      ${bargain ? `<div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);border-radius:10px;padding:10px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">🤑</span>
+        <div style="flex:1">
+          <div style="font-size:10px;color:var(--green)">BIGGEST BARGAIN</div>
+          <div style="font-weight:700;font-size:13px">${escHtml(bargain.playerName)}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-weight:800;color:var(--green)">⚡${bargain.price}</div>
+          <div style="font-size:10px;color:var(--text3)">${escHtml(S.teams[bargain.teamIdx]||'')}</div>
+        </div>
+      </div>` : ''}
+      ${strongest ? `<div style="background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.25);border-radius:10px;padding:10px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">👑</span>
+        <div style="flex:1">
+          <div style="font-size:10px;color:var(--purple)">STRONGEST TEAM</div>
+          <div style="font-weight:700;font-size:13px">${escHtml(strongest.team)}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-weight:800;color:var(--purple)">⚡${strongest.avgRating}</div>
+          <div style="font-size:10px;color:var(--text3)">Avg Rating</div>
+        </div>
+      </div>` : ''}
+      ${bestValue ? `<div style="background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.25);border-radius:10px;padding:10px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">💰</span>
+        <div style="flex:1">
+          <div style="font-size:10px;color:var(--cyan)">BEST VALUE TEAM</div>
+          <div style="font-weight:700;font-size:13px">${escHtml(bestValue.team)}</div>
+        </div>
+        <div style="text-align:right;font-size:10px;color:var(--text3)">Most value per ELO spent</div>
+      </div>` : ''}
+    </div>
+    <button class="btn btn-gold btn-sm" style="width:100%;margin-bottom:8px" onclick="aucShowRecap()">📊 Full Recap</button>`;
   }
 
   // ── Bid controls — multi-captain support ──────────────────────────
@@ -12372,18 +13768,40 @@ function aucShowRecap() {
   showModal(modal('📊 Auction Recap', body));
 }
 
-// ── IPL bid function (replaces aucBid) ─────────────────────────────
+// ── IPL bid function ───────────────────────────────────────────────
 function aucBidIPL(teamIdx, amount) {
   if (!aucCanBid(teamIdx) && !(window.fbIsAdmin && window.fbIsAdmin())) {
     fbToast('You do not have bidding rights for this team', 'error');
     return;
   }
+
+  // Bug Fix #1 — secondary layer: captain can only bid for their bound team
+  const user = window.fbCurrentUser;
+  if (user && !(window.fbIsAdmin && window.fbIsAdmin()) && _aucCaptainTeamId !== null) {
+    const localTeamName = S.teams[teamIdx];
+    const boundMatch = _aucCaptainTeamId === String(teamIdx) ||
+                       (_aucCaptainTeamName && _aucCaptainTeamName === localTeamName);
+    if (!boundMatch) {
+      fbToast('You can only bid for your assigned team.', 'error');
+      return;
+    }
+  }
+
   const purse = AUC.teamPurses[teamIdx] ?? AUC.pursePerTeam;
   if (amount > purse) { fbToast('Not enough ELO purse!', 'error'); return; }
   if (amount <= AUC.currentBid) { fbToast(`Bid must be higher than ⚡${AUC.currentBid}`, 'error'); return; }
   if (aucTeamRoster(teamIdx).length >= 10) { fbToast('Roster is full!', 'error'); return; }
 
-  const user = window.fbCurrentUser;
+  // Bug Fix #25 — minimum roster protection
+  if (!aucCanAffordBid(teamIdx, amount)) {
+    const minRosterSize = AUC.minRosterSize || 8;
+    const minBidPerPlayer = AUC.minBidPerPlayer || 100;
+    const rosterSize = aucTeamRoster(teamIdx).length;
+    const slotsLeft = Math.max(0, minRosterSize - rosterSize - 1);
+    fbToast(`Not enough ELO remaining to complete required roster. You need to reserve at least ⚡${slotsLeft * minBidPerPlayer} for ${slotsLeft} more players.`, 'error');
+    return;
+  }
+
   const myRole = aucGetMyRole(teamIdx) || (window.fbIsAdmin && window.fbIsAdmin() ? 'captain' : null);
   const bidderName = (user && (user.displayName || user.email)) || S.teams[teamIdx];
 
@@ -12404,8 +13822,10 @@ function aucBidIPL(teamIdx, amount) {
   const bidAreas = document.querySelectorAll('.auc-my-team-card');
   bidAreas.forEach(el => { el.classList.add('auc-bid-flash'); setTimeout(()=>el.classList.remove('auc-bid-flash'),300); });
   renderPage('auction');
-  // Reset timer on new bid — only in open bidding mode
-  if (window._aucTimer && AUC.status === 'active' && AUC.currentBiddingMode !== 'blind') {
+  // New bid resets Going Once/Twice sequence
+  aucOnNewBidReset();
+  // Reset timer on new bid — only in open bidding mode (if not already handled by aucOnNewBidReset)
+  if (_aucGoingPhase === 0 && window._aucTimer && AUC.status === 'active' && AUC.currentBiddingMode !== 'blind') {
     aucStopTimer();
     aucStartTimer(AUC.timerDuration);
   }
@@ -12532,7 +13952,70 @@ function aucReAuction(playerId) {
   renderPage('auction');
 }
 
-// ── aucMarkSold — includes bidder info ────────────────────────────
+// ── Going Once / Going Twice / SOLD sequence ──────────────────────
+let _aucGoingPhase = 0; // 0=none, 1=going_once, 2=going_twice, 3=sold
+let _aucGoingTimer = null;
+
+function aucClearGoingTimer() {
+  if (_aucGoingTimer) { clearTimeout(_aucGoingTimer); _aucGoingTimer = null; }
+}
+
+function aucStartGoingOnce() {
+  if (AUC.currentBid <= 0 || AUC.currentBidTeam === null) {
+    aucMarkUnsold(); return;
+  }
+  aucClearGoingTimer();
+  _aucGoingPhase = 1;
+  // Show overlay
+  _aucShowGoingOverlay(1);
+  _aucGoingTimer = setTimeout(() => {
+    if (_aucGoingPhase === 1) aucStartGoingTwice();
+  }, 3000);
+}
+
+function aucStartGoingTwice() {
+  aucClearGoingTimer();
+  _aucGoingPhase = 2;
+  _aucShowGoingOverlay(2);
+  _aucGoingTimer = setTimeout(() => {
+    if (_aucGoingPhase === 2) aucMarkSold();
+  }, 3000);
+}
+
+function _aucShowGoingOverlay(phase) {
+  const id = 'aucGoingOverlay';
+  let el = document.getElementById(id);
+  if (!el) {
+    el = document.createElement('div');
+    el.id = id;
+    el.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;pointer-events:none;';
+    document.body.appendChild(el);
+  }
+  const configs = {
+    1: { bg:'rgba(234,179,8,0.15)', border:'rgba(234,179,8,0.5)', color:'#EAB308', label:'🔨 GOING ONCE...', sub:'Still time to bid!' },
+    2: { bg:'rgba(249,115,22,0.18)', border:'rgba(249,115,22,0.6)', color:'#F97316', label:'🔨 GOING TWICE...', sub:'Last chance!' },
+    3: { bg:'rgba(34,197,94,0.18)',  border:'rgba(34,197,94,0.7)',  color:'#22C55E', label:'🔨 SOLD! ✅',       sub:'' },
+  };
+  const c = configs[phase] || configs[1];
+  el.innerHTML = `<div style="background:${c.bg};border:2px solid ${c.border};border-radius:20px;padding:28px 44px;text-align:center;animation:fadeIn .3s ease;backdrop-filter:blur(8px)">
+    <div style="font-family:var(--head);font-size:clamp(28px,7vw,44px);font-weight:800;color:${c.color};letter-spacing:2px;text-shadow:0 0 30px ${c.color}88">${c.label}</div>
+    ${c.sub ? `<div style="font-size:14px;color:rgba(255,255,255,0.6);margin-top:8px">${c.sub}</div>` : ''}
+    ${AUC.currentBid > 0 && AUC.currentBidTeam !== null ? `
+      <div style="margin-top:14px;font-family:var(--head);font-size:20px;font-weight:700;color:#fff">
+        ⚡${AUC.currentBid} — ${escHtml(S.teams[AUC.currentBidTeam]||'')}
+      </div>` : ''}
+  </div>`;
+  setTimeout(() => { if (el && phase !== 3) el.remove(); }, phase === 3 ? 2200 : 3100);
+}
+
+function aucResetGoingSequence() {
+  aucClearGoingTimer();
+  _aucGoingPhase = 0;
+  const el = document.getElementById('aucGoingOverlay');
+  if (el) el.remove();
+}
+
+// ── aucMarkSold — atomic Firestore write (Bug Fix #24) ────────────
 function aucMarkSold() {
   const cp = aucCurrentPlayer();
   if (!cp || AUC.currentBidTeam === null) { fbToast('No winning bid to confirm', 'error'); return; }
@@ -12542,7 +14025,9 @@ function aucMarkSold() {
   const price   = AUC.currentBid;
   const pId     = String(cp.id);
 
-  // Deduct purse
+  aucResetGoingSequence();
+
+  // Deduct purse locally
   const newPurse = (AUC.teamPurses[teamIdx] ?? AUC.pursePerTeam) - price;
   const newSold  = { ...AUC.soldPlayers, [pId]: {
     teamIdx, price,
@@ -12560,7 +14045,7 @@ function aucMarkSold() {
                bidderName: AUC.currentBidderName, bidderRole: AUC.currentBidderRole };
   }
 
-  // Assign to player record
+  // Assign to player record in S
   const pIdx = S.players.findIndex(x => x.id === cp.id);
   if (pIdx >= 0) { S.players[pIdx].currentTeamId = teamIdx; S.players[pIdx].teamAssignedAt = Date.now(); saveState(); }
 
@@ -12576,7 +14061,12 @@ function aucMarkSold() {
   }));
   aucStopTimer();
   aucFireConfetti();
+  _aucShowGoingOverlay(3);
   fbToast(`🔨 SOLD! ${cp.name} → ${S.teams[teamIdx]} ⚡${price}`, 'success');
+
+  // Atomic Firestore write (Bug Fix #24)
+  aucFbHandlePlayerSold(cp.id, teamIdx, price, cp.name, cp.tier);
+
   // Refresh stream overlay if open
   setTimeout(() => {
     const so = document.getElementById('aucStreamOverlay');
@@ -12596,20 +14086,171 @@ function bindAuctionPage() {
 }
 
 // ══════════════════════════════════════════════════════════════════
-//  FIREBASE REAL-TIME AUCTION SYNC
-//  Stores / listens to: auction/<tournamentId> in Firestore
+//  FIREBASE REAL-TIME AUCTION SYNC  v2.0
+//  All auction state lives in Firestore — NOT localStorage.
+//  Collection paths follow the spec:
+//    /auction/state          — status, tier, currentPlayerId, config
+//    /auction/currentBid     — live bid document
+//    /auction/tiers          — shuffled reveal orders
+//    /teams/{teamId}         — purse, roster, stats
+//    /players/{playerId}     — auctionStatus, soldToTeamId, soldPrice
+//    /auction/history/records — sale log subcollection
 // ══════════════════════════════════════════════════════════════════
 
-let _aucFbUnsub = null;      // Firestore onSnapshot unsubscribe
-let _aucFbSaving = false;    // prevent re-entrant saves
-let _aucFbDocId  = null;     // current Firestore doc path
+let _aucFbUnsubs = [];     // array of onSnapshot unsubscribers
+let _aucFbSaving = false;  // re-entrant guard
+let _aucCaptainTeamId  = null;  // Firestore-bound team for this captain
+let _aucCaptainTeamName = null;
+
+// ── Captain team binding — loads from /users/{uid} on auth ────────
+async function aucLoadCaptainBinding() {
+  const user = window.fbCurrentUser;
+  if (!user || !window.fbDb) return;
+  try {
+    const { getDoc, doc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+    const snap = await getDoc(doc(fbDb, 'users', user.uid));
+    if (snap.exists()) {
+      const data = snap.data();
+      _aucCaptainTeamId   = data.teamId   || null;
+      _aucCaptainTeamName = data.teamName || null;
+    }
+  } catch(e) {
+    console.warn('[AUC] Could not load captain binding:', e.message);
+  }
+}
+
+// ── aucGetMyRole — uses Firestore-bound teamId (Bug Fix #1) ────────
+function aucGetMyRole(teamIdx) {
+  const user = window.fbCurrentUser;
+  if (!user) return null;
+  if (window.fbIsAdmin && window.fbIsAdmin()) return 'captain'; // admin can bid any
+
+  // Primary: Firestore team binding
+  if (_aucCaptainTeamId !== null) {
+    // teamIdx in local S.teams maps to Firestore by position — check by name too
+    const localTeamName = S.teams[teamIdx];
+    if (_aucCaptainTeamId === String(teamIdx) ||
+        (_aucCaptainTeamName && _aucCaptainTeamName === localTeamName)) {
+      return 'captain';
+    }
+    return null; // bound to a different team
+  }
+
+  // Fallback: AUC.teamRoles legacy config
+  const roles = AUC.teamRoles[teamIdx];
+  if (!roles) return null;
+  if (roles.captain && (roles.captain.uid === user.uid || roles.captain.email === user.email)) return 'captain';
+  if (roles.viceCaptain && (roles.viceCaptain.uid === user.uid || roles.viceCaptain.email === user.email)) return 'vice';
+  if (roles.coCaptains) {
+    const co = roles.coCaptains.find(c => c.uid === user.uid);
+    if (co) return co.permission === 'view' ? null : 'co';
+  }
+  return null;
+}
+
+function aucCanBid(teamIdx) {
+  if (window.fbIsAdmin && window.fbIsAdmin()) return true;
+  const role = aucGetMyRole(teamIdx);
+  return role === 'captain' || role === 'vice' || role === 'co';
+}
+
+// ── aucMyBiddingTeams — captain only gets their assigned team ──────
+function aucMyBiddingTeams() {
+  const user = window.fbCurrentUser;
+  if (!user) return [];
+  const isAdmin = window.fbIsAdmin && window.fbIsAdmin();
+  if (isAdmin) return S.teams.map((_,i) => i);
+
+  // Bug Fix #1: If captain is bound to a team, ONLY return that team
+  if (_aucCaptainTeamId !== null) {
+    const teams = [];
+    S.teams.forEach((name, ti) => {
+      if (_aucCaptainTeamId === String(ti) ||
+          (_aucCaptainTeamName && _aucCaptainTeamName === name)) {
+        teams.push(ti);
+      }
+    });
+    return teams;
+  }
+
+  // Fallback legacy
+  return S.teams.map((_,ti) => aucCanBid(ti) ? ti : -1).filter(i => i >= 0);
+}
 
 function aucFbDocId() {
-  // Use tournament name or fallback key so multiple tournaments don't collide
   const base = (window.S && S.name) ? S.name.replace(/[^a-zA-Z0-9_-]/g,'_').slice(0,40) : 'default';
   return 'auction_' + base;
 }
 
+// ── Atomic sold handler — Bug Fix #24 (ELO deduction) ─────────────
+async function aucFbHandlePlayerSold(playerId, winningTeamIdx, finalPrice, playerName, tier) {
+  try {
+    const {
+      writeBatch, doc, collection, serverTimestamp, increment, arrayUnion
+    } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+    const batch = writeBatch(fbDb);
+    const docId = aucFbDocId();
+    const teamFbId = 'team_' + winningTeamIdx;
+    const playerFbId = 'player_' + String(playerId);
+
+    // 1. Deduct ELO from team
+    const teamRef = doc(fbDb, 'teams', teamFbId);
+    batch.update(teamRef, {
+      remainingElo: increment(-finalPrice),
+      players: arrayUnion(String(playerId)),
+      playerCount: increment(1),
+      updatedAt: serverTimestamp()
+    });
+
+    // 2. Mark player as sold
+    const playerRef = doc(fbDb, 'players', playerFbId);
+    batch.update(playerRef, {
+      auctionStatus: 'sold',
+      soldToTeamId: teamFbId,
+      soldPrice: finalPrice,
+      soldTimestamp: serverTimestamp()
+    });
+
+    // 3. Add to auction history
+    const histRef = doc(collection(fbDb, 'auction', 'history', 'records'));
+    batch.set(histRef, {
+      playerId: String(playerId), playerName, teamId: teamFbId,
+      teamName: S.teams[winningTeamIdx] || ('Team' + (winningTeamIdx+1)),
+      finalPrice, tier: tier || 'C', timestamp: serverTimestamp()
+    });
+
+    // 4. Log bid audit
+    const bidRef = doc(collection(fbDb, 'auction', 'bids', 'log'));
+    batch.set(bidRef, {
+      playerId: String(playerId), teamId: teamFbId,
+      captainId: window.fbCurrentUser ? window.fbCurrentUser.uid : 'admin',
+      amount: finalPrice, timestamp: serverTimestamp()
+    });
+
+    // 5. Update /auction/state currentBid status
+    const stateRef = doc(fbDb, 'auction', 'currentBid');
+    batch.update(stateRef, { status: 'sold', soldAt: serverTimestamp() });
+
+    await batch.commit();
+  } catch(e) {
+    console.warn('[AUC] Firestore atomic sold failed (localStorage still updated):', e.message);
+  }
+}
+
+// ── Minimum roster protection — Bug Fix #25 ───────────────────────
+function aucCanAffordBid(teamIdx, bidAmount) {
+  const minRosterSize = AUC.minRosterSize || 8;
+  const minBidPerPlayer = AUC.minBidPerPlayer || 100;
+  const purse = AUC.teamPurses[teamIdx] ?? AUC.pursePerTeam;
+  const rosterSize = aucTeamRoster(teamIdx).length;
+  // After winning this player, one slot fills
+  const slotsRemaining = Math.max(0, minRosterSize - rosterSize - 1);
+  const reservedAfterBid = slotsRemaining * minBidPerPlayer;
+  const eloAfterBid = purse - bidAmount;
+  return eloAfterBid >= reservedAfterBid;
+}
+
+// ── Firestore save — writes /auction/state + purse board ──────────
 async function aucFbSave() {
   if (_aucFbSaving) return;
   _aucFbSaving = true;
@@ -12617,44 +14258,51 @@ async function aucFbSave() {
     const { setDoc, doc, serverTimestamp } =
       await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
     const id = aucFbDocId();
+    // Write full AUC blob to /auctions/{id} (backward compat) AND to /auction/state
     await setDoc(doc(fbDb, 'auctions', id), {
       ...AUC,
       _updatedAt: serverTimestamp(),
       _updatedBy: window.fbCurrentUser ? (window.fbCurrentUser.displayName || window.fbCurrentUser.email) : 'admin',
     });
+    // Also mirror status-critical fields to /auction/state for Security Rules
+    await setDoc(doc(fbDb, 'auction', 'state'), {
+      status: AUC.status,
+      currentTier: AUC.currentTier || 'S',
+      currentPlayerId: AUC.currentPlayerIdx !== null ? String(aucCurrentPlayer()?.id || '') : null,
+      timerDuration: AUC.timerDuration,
+      pursePerTeam: AUC.pursePerTeam,
+      minRosterSize: AUC.minRosterSize || 8,
+      minBidPerPlayer: AUC.minBidPerPlayer || 100,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
   } catch(e) {
-    console.warn('[AUC] Firebase save failed, falling back to localStorage:', e.message);
+    console.warn('[AUC] Firebase save failed, localStorage backup kept:', e.message);
   } finally { _aucFbSaving = false; }
 }
 
+// ── Real-time listeners per spec Section 21 ───────────────────────
 async function aucFbSubscribe() {
-  if (_aucFbUnsub) { _aucFbUnsub(); _aucFbUnsub = null; }
+  aucFbUnsubscribe();
   try {
-    const { onSnapshot, doc } =
+    const { onSnapshot, doc, collection } =
       await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
     const id = aucFbDocId();
-    _aucFbDocId = id;
-    _aucFbUnsub = onSnapshot(doc(fbDb, 'auctions', id), snap => {
+
+    // Primary: listen to full AUC blob (backward compat)
+    const unsubMain = onSnapshot(doc(fbDb, 'auctions', id), snap => {
       if (!snap.exists()) return;
+      if (snap.metadata && snap.metadata.hasPendingWrites) return;
       const remote = snap.data();
       if (!remote) return;
-      // Skip if this update was triggered by our own save
-      const updatedBy = remote._updatedBy;
-      const myId = window.fbCurrentUser ? (window.fbCurrentUser.displayName || window.fbCurrentUser.email) : 'admin';
-      // Check metadata to avoid echo — Firestore hasPendingWrites tells us it's a local write
-      if (snap.metadata && snap.metadata.hasPendingWrites) return;
-      // Merge remote into AUC — remote wins except for local timer state
       AUC = { ...AUC_INIT, ...remote };
-      // Remove Firestore meta keys
       delete AUC._updatedAt; delete AUC._updatedBy;
-      // Sync localStorage too
       try { localStorage.setItem(AUC_STORAGE_KEY, JSON.stringify(AUC)); } catch {}
-      // Update nav dot
       const dot = document.getElementById('auctionNavDot');
       if (dot) dot.style.display = AUC.status === 'active' ? '' : 'none';
-      // Re-render if on auction page
       if (currentPage === 'auction') renderPage('auction');
     }, err => console.warn('[AUC] Snapshot error:', err.message));
+
+    _aucFbUnsubs.push(unsubMain);
     console.log('[AUC] Subscribed to Firestore real-time sync →', id);
   } catch(e) {
     console.warn('[AUC] Firebase subscribe failed:', e.message);
@@ -12662,7 +14310,8 @@ async function aucFbSubscribe() {
 }
 
 function aucFbUnsubscribe() {
-  if (_aucFbUnsub) { _aucFbUnsub(); _aucFbUnsub = null; }
+  _aucFbUnsubs.forEach(u => { try { u(); } catch(_) {} });
+  _aucFbUnsubs = [];
 }
 
 // Override aucSave to also push to Firebase
@@ -12672,9 +14321,67 @@ aucSave = function() {
   aucFbSave();           // push to Firestore (async, fire-and-forget)
 };
 
+// Load captain binding when auth state resolves
+(function waitForAuth() {
+  if (window.fbCurrentUser) { aucLoadCaptainBinding(); }
+  else { setTimeout(waitForAuth, 600); }
+})();
+
 // ══════════════════════════════════════════════════════════════════
 //  ADMIN CONTROL FUNCTIONS
 // ══════════════════════════════════════════════════════════════════
+
+// ── Admin: End Bidding immediately (Section 12) ───────────────────
+function aucEndBidding() {
+  if (!window.fbIsAdmin || !window.fbIsAdmin()) { fbToast('Admin only', 'error'); return; }
+  aucStopTimer();
+  aucResetGoingSequence();
+  if (AUC.currentBid > 0 && AUC.currentBidTeam !== null) {
+    aucMarkSold();
+  } else {
+    aucMarkUnsold();
+  }
+}
+
+// ── Player reveal animation (3-step, Section 6) ───────────────────
+let _aucRevealAnimating = false;
+function aucShowRevealAnimation(onComplete) {
+  if (_aucRevealAnimating) { if (onComplete) onComplete(); return; }
+  _aucRevealAnimating = true;
+  const id = 'aucRevealAnim';
+  let el = document.getElementById(id);
+  if (el) el.remove();
+  el = document.createElement('div');
+  el.id = id;
+  el.style.cssText = 'position:fixed;inset:0;z-index:10000;background:linear-gradient(135deg,#0A0F1E 0%,#111827 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;animation:fadein .2s;';
+  el.innerHTML = `
+    <div style="font-family:var(--head);font-size:clamp(28px,7vw,44px);font-weight:800;color:#3B82F6;letter-spacing:3px;animation:pulse 1s infinite" id="aucRevealMsg">NEXT PLAYER INCOMING...</div>
+    <div style="font-size:64px;animation:bob 1s ease-in-out infinite">♞</div>
+    <div id="aucRevealSub" style="font-size:14px;color:rgba(148,163,184,0.6);letter-spacing:4px;text-transform:uppercase">Preparing auction...</div>
+    <div style="width:200px;height:3px;background:rgba(30,45,69,0.8);border-radius:3px;overflow:hidden">
+      <div id="aucRevealBar" style="height:100%;background:linear-gradient(90deg,#3B82F6,#A855F7,#F59E0B);border-radius:3px;width:0%;transition:width .05s linear"></div>
+    </div>`;
+  document.body.appendChild(el);
+
+  let pct = 0;
+  const barEl = el.querySelector('#aucRevealBar');
+  const msgEl = el.querySelector('#aucRevealMsg');
+  const subEl = el.querySelector('#aucRevealSub');
+  const barIv = setInterval(() => { pct = Math.min(pct + 3, 100); if(barEl) barEl.style.width = pct + '%'; }, 30);
+
+  setTimeout(() => {
+    if(msgEl) { msgEl.textContent = 'THE NEXT PLAYER IS...'; msgEl.style.color = '#A855F7'; }
+    if(subEl) subEl.textContent = 'Get ready to bid!';
+  }, 1500);
+
+  setTimeout(() => {
+    clearInterval(barIv);
+    if(barEl) barEl.style.width = '100%';
+    el.style.opacity = '0'; el.style.transition = 'opacity .3s';
+    setTimeout(() => { el.remove(); _aucRevealAnimating = false; if (onComplete) onComplete(); }, 350);
+  }, 2800);
+}
+
 
 function aucStartAuction() {
   if (!window.fbIsAdmin || !window.fbIsAdmin()) { fbToast('Admin only', 'error'); return; }
@@ -13241,6 +14948,11 @@ function _renderAucAdmin(pool) {
     html += `<button class="btn btn-danger" style="grid-column:1/-1" onclick="aucEndAuction()">🏁 End Auction</button>`;
   }
 
+  // End Bidding — force immediate sold/unsold
+  if (isActive && cp) {
+    html += `<button class="btn btn-gold" style="grid-column:1/-1" onclick="aucEndBidding()">🔨 End Bidding Now</button>`;
+  }
+
   if ((isActive || isEnded) && AUC.unsoldPlayers.length > 0 && !isUnsold) {
     html += `<button class="btn btn-outline" style="grid-column:1/-1;border-color:var(--gold);color:var(--gold)" onclick="aucStartUnsoldRound()">
       🔄 Start Unsold Round (${AUC.unsoldPlayers.length} players)
@@ -13421,6 +15133,13 @@ window.aucStartUnsoldRound    = aucStartUnsoldRound;
 window.aucResetAuction        = aucResetAuction;
 window.aucConfirmReset        = aucConfirmReset;
 window.aucShowCustomBid       = aucShowCustomBid;
+// v2.0 new exports
+window.aucEndBidding          = aucEndBidding;
+window.aucStartGoingOnce      = aucStartGoingOnce;
+window.aucCanAffordBid        = aucCanAffordBid;
+window.aucShowRevealAnimation = aucShowRevealAnimation;
+window.aucLoadCaptainBinding  = aucLoadCaptainBinding;
+window.aucFbHandlePlayerSold  = aucFbHandlePlayerSold;
 
 </script>
 </body>
