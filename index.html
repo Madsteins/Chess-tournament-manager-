@@ -13319,11 +13319,33 @@ function _renderAucAdmin(pool) {
 aucLoad();
 
 // ══════════════════════════════════════════════════════════════════
-//  GLOBAL EXPORTS — expose module-scoped functions to window
-//  (required because this is a <script type="module"> block)
+//  GLOBAL EXPORTS — expose module-scoped functions/vars to window
+//  Required because <script type="module"> has its own scope
 // ══════════════════════════════════════════════════════════════════
+
+// My Page
+window.renderMyPage           = renderMyPage;
+window.bindMyPage             = bindMyPage;
+
+// Auction tab state — must be a getter/setter so onclick="_aucTab='pool'" works
+Object.defineProperty(window, '_aucTab', {
+  get() { return _aucTab; },
+  set(v) { _aucTab = v; },
+  configurable: true
+});
+
+// Auction render & bind
 window.renderAuctionPage      = renderAuctionPage;
 window.bindAuctionPage        = bindAuctionPage;
+
+// Auction state
+Object.defineProperty(window, 'AUC', {
+  get() { return AUC; },
+  set(v) { AUC = v; },
+  configurable: true
+});
+
+// Auction functions
 window.aucLoad                = aucLoad;
 window.aucSave                = aucSave;
 window.aucSet                 = aucSet;
@@ -13375,7 +13397,6 @@ window.aucStartUnsoldRound    = aucStartUnsoldRound;
 window.aucResetAuction        = aucResetAuction;
 window.aucConfirmReset        = aucConfirmReset;
 window.aucShowCustomBid       = aucShowCustomBid;
-window.AUC                    = AUC;
 
 </script>
 </body>
