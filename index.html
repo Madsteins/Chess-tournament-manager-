@@ -347,7 +347,6 @@ html[data-theme="light"] .menu-toggle{color:var(--text)}
   overflow-y:auto;
   background:rgba(var(--bg2-rgb,12,12,30),0.98);
   background:var(--bg2);
-  opacity:0.98;
   border:1px solid var(--border);
   border-radius:16px;
   box-shadow:0 8px 32px rgba(0,0,0,0.15);
@@ -11605,8 +11604,8 @@ function _renderAucTimer() {
   const r = 35, circ = 2 * Math.PI * r;
   const offset = circ * (1 - pct);
   const color = window._aucTimerSec <= 5 ? '#ff3355' : window._aucTimerSec <= 10 ? '#F59E0B' : '#3B82F6';
-  ring.innerHTML = `<circle cx="40" cy="40" r="${r}" stroke="var(--border)" stroke-dasharray="${circ}" stroke-dashoffset="0"/>
-    <circle cx="40" cy="40" r="${r}" stroke="${color}" stroke-dasharray="${circ}" stroke-dashoffset="${offset}" stroke-linecap="round"/>`;
+  ring.innerHTML = `<circle cx="40" cy="40" r="${r}" stroke="var(--border)" stroke-width="5" fill="none" stroke-dasharray="${circ}" stroke-dashoffset="0"/>
+    <circle cx="40" cy="40" r="${r}" stroke="${color}" stroke-width="5" fill="none" stroke-dasharray="${circ}" stroke-dashoffset="${offset}" stroke-linecap="round"/>`;
   num.textContent = window._aucTimerSec;
   num.className = 'auc-timer-num' + (window._aucTimerSec <= 5 ? ' low' : '');
 }
@@ -11633,7 +11632,7 @@ function aucMarkUnsold() {
   if (!AUC.unsoldPlayers.includes(String(p.id))) {
     AUC.unsoldPlayers = [...AUC.unsoldPlayers, String(p.id)];
   }
-  AUC.history.unshift({ type: 'UNSOLD', playerName: p.name, ts: new Date().toLocaleTimeString() });
+  AUC.history.unshift({ type: 'UNSOLD', playerName: p.name, playerId: String(p.id), ts: new Date().toLocaleTimeString() });
   aucSet(a => ({ ...a, currentPlayerIdx: null, currentBid: 0, currentBidTeam: null }));
   aucStopTimer();
   fbToast(`${p.name} — UNSOLD`, 'info');
@@ -11648,7 +11647,7 @@ function aucRevealPlayer(poolIdx) {
     return;
   }
   aucStopTimer();
-  const isBlind = AUC.currentBiddingMode === 'blind' && p.tier === 'S';
+  const isBlind = AUC.currentBiddingMode === 'blind';
   aucSet(a => ({
     ...a,
     currentPlayerIdx: poolIdx,
@@ -11836,7 +11835,8 @@ function renderAuctionPage() {
   }
 }
 function _renderAuctionPageInner() {
-  aucLoad();
+  // Note: do NOT call aucLoad() here - it re-reads localStorage and clobbers active in-memory AUC state.
+  // aucLoad() is called only on init and bindAuctionPage.
   const pool = aucGetPool();
   const status = AUC.status;
   const isAdmin = window.fbIsAdmin ? window.fbIsAdmin() : true;
@@ -12395,6 +12395,7 @@ function aucBidIPL(teamIdx, amount) {
   }));
   AUC.history.unshift({
     type: 'BID', playerName: aucCurrentPlayer()?.name || '?',
+    playerId: String(aucCurrentPlayer()?.id || ''),
     teamIdx, amount, bidderRole: myRole, bidderName,
     ts: new Date().toLocaleTimeString()
   });
@@ -12403,8 +12404,8 @@ function aucBidIPL(teamIdx, amount) {
   const bidAreas = document.querySelectorAll('.auc-my-team-card');
   bidAreas.forEach(el => { el.classList.add('auc-bid-flash'); setTimeout(()=>el.classList.remove('auc-bid-flash'),300); });
   renderPage('auction');
-  // Reset timer on new bid
-  if (window._aucTimer && AUC.status === 'active') {
+  // Reset timer on new bid — only in open bidding mode
+  if (window._aucTimer && AUC.status === 'active' && AUC.currentBiddingMode !== 'blind') {
     aucStopTimer();
     aucStartTimer(AUC.timerDuration);
   }
@@ -12535,6 +12536,8 @@ function aucReAuction(playerId) {
 function aucMarkSold() {
   const cp = aucCurrentPlayer();
   if (!cp || AUC.currentBidTeam === null) { fbToast('No winning bid to confirm', 'error'); return; }
+  if (AUC.status !== 'active' && AUC.status !== 'unsold-round') { fbToast('Auction is not active', 'error'); return; }
+  if (AUC.currentBid <= 0) { fbToast('No valid bid amount', 'error'); return; }
   const teamIdx = AUC.currentBidTeam;
   const price   = AUC.currentBid;
   const pId     = String(cp.id);
@@ -12561,7 +12564,7 @@ function aucMarkSold() {
   const pIdx = S.players.findIndex(x => x.id === cp.id);
   if (pIdx >= 0) { S.players[pIdx].currentTeamId = teamIdx; S.players[pIdx].teamAssignedAt = Date.now(); saveState(); }
 
-  AUC.history.unshift({ type: 'SOLD', playerName: cp.name, teamIdx, price,
+  AUC.history.unshift({ type: 'SOLD', playerName: cp.name, playerId: pId, teamIdx, price,
     bidderRole: AUC.currentBidderRole, bidderName: AUC.currentBidderName,
     ts: new Date().toLocaleTimeString() });
 
@@ -12612,7 +12615,7 @@ async function aucFbSave() {
   _aucFbSaving = true;
   try {
     const { setDoc, doc, serverTimestamp } =
-      await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+      await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
     const id = aucFbDocId();
     await setDoc(doc(fbDb, 'auctions', id), {
       ...AUC,
@@ -12628,15 +12631,19 @@ async function aucFbSubscribe() {
   if (_aucFbUnsub) { _aucFbUnsub(); _aucFbUnsub = null; }
   try {
     const { onSnapshot, doc } =
-      await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+      await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
     const id = aucFbDocId();
     _aucFbDocId = id;
     _aucFbUnsub = onSnapshot(doc(fbDb, 'auctions', id), snap => {
       if (!snap.exists()) return;
       const remote = snap.data();
       if (!remote) return;
+      // Skip if this update was triggered by our own save
+      const updatedBy = remote._updatedBy;
+      const myId = window.fbCurrentUser ? (window.fbCurrentUser.displayName || window.fbCurrentUser.email) : 'admin';
+      // Check metadata to avoid echo — Firestore hasPendingWrites tells us it's a local write
+      if (snap.metadata && snap.metadata.hasPendingWrites) return;
       // Merge remote into AUC — remote wins except for local timer state
-      const localTimer = window._aucTimerSec;
       AUC = { ...AUC_INIT, ...remote };
       // Remove Firestore meta keys
       delete AUC._updatedAt; delete AUC._updatedBy;
@@ -12743,9 +12750,22 @@ function aucNextPlayer() {
     }
     const pId = unsoldLeft[0];
     nextIdx = pool.findIndex(p => String(p.id) === String(pId));
-    // Remove from unsold list since we're re-auctioning
+    // Remove from unsold list since we're re-auctioning (don't call aucRevealPlayer which clears unsoldPlayers)
     const newUnsold = AUC.unsoldPlayers.filter(id => id !== pId);
-    aucSet(a => ({ ...a, unsoldPlayers: newUnsold }));
+    aucSet(a => ({
+      ...a,
+      unsoldPlayers: newUnsold,
+      currentPlayerIdx: nextIdx,
+      currentBid: 0,
+      currentBidTeam: null,
+      blindBids: {},
+      blindBidsRevealed: false,
+    }));
+    AUC.history.unshift({ type: 'REVEAL', playerName: pool[nextIdx]?.name || '?', ts: new Date().toLocaleTimeString() });
+    aucSave();
+    aucStartTimer(AUC.currentBiddingMode === 'blind' ? AUC.blindBidDuration : AUC.timerDuration);
+    renderPage('auction');
+    return;
   } else {
     // Pick next from revealOrder that's still in pool status
     for (const idx of AUC.revealOrder) {
@@ -12820,7 +12840,10 @@ function aucUndoLastSale() {
   if (!lastSold) { fbToast('No sale to undo', 'error'); return; }
 
   const pool = aucGetPool();
-  const p = pool.find(x => x.name === lastSold.playerName);
+  // Use playerId for reliable lookup (name-based lookup breaks with duplicate names)
+  const p = lastSold.playerId
+    ? pool.find(x => String(x.id) === String(lastSold.playerId))
+    : pool.find(x => x.name === lastSold.playerName);
   if (!p) { fbToast('Cannot find player record', 'error'); return; }
   const pId = String(p.id);
 
@@ -12837,8 +12860,9 @@ function aucUndoLastSale() {
   const pIdx = S.players.findIndex(x => String(x.id) === pId);
   if (pIdx >= 0) { delete S.players[pIdx].currentTeamId; saveState(); }
 
-  // Remove from history
-  const newHistory = AUC.history.filter((h, i) => !(h.type === 'SOLD' && i === AUC.history.indexOf(lastSold)));
+  // Remove from history — find() gives us the first match, remove it by index
+  const lastSoldIdx = AUC.history.findIndex(h => h.type === 'SOLD' && (h.playerId === pId || h.playerName === lastSold.playerName));
+  const newHistory = lastSoldIdx >= 0 ? AUC.history.filter((_, i) => i !== lastSoldIdx) : AUC.history;
 
   // Update MVP if it was this player
   let newMvp = AUC.mvp;
@@ -12934,11 +12958,27 @@ function aucConfirmRestartTier(tier) {
 
   aucSet(a => ({ ...a, soldPlayers: newSold, teamPurses: newPurses, revealOrder: newRevealOrder,
     currentPlayerIdx: null, currentBid: 0, currentBidTeam: null, status: 'active' }));
+
+  // Recalculate MVP after undoing tier sales
+  const remainingEntries = Object.entries(AUC.soldPlayers);
+  let newMvp = null;
+  if (remainingEntries.length > 0) {
+    const top = remainingEntries.reduce((best, cur) => (!best || cur[1].price > best[1].price) ? cur : best, null);
+    if (top) {
+      const pool2 = aucGetPool();
+      const topP = pool2.find(x => String(x.id) === top[0]);
+      if (topP) newMvp = { playerId: top[0], playerName: topP.name, price: top[1].price, teamIdx: top[1].teamIdx, tier: topP.tier, rating: topP.rating };
+    }
+  }
+  AUC.mvp = newMvp;
+  aucSave();
+
   fbToast(`🔄 ${tier} tier restarted — ${tierPlayers.length} players re-shuffled`, 'success');
 }
 
 function aucStartUnsoldRound() {
   if (!window.fbIsAdmin || !window.fbIsAdmin()) { fbToast('Admin only', 'error'); return; }
+  if (AUC.status !== 'active' && AUC.status !== 'paused' && AUC.status !== 'ended') { fbToast('Auction must be active, paused, or ended to start unsold round', 'error'); return; }
   if (AUC.unsoldPlayers.length === 0) { fbToast('No unsold players', 'info'); return; }
   // Shuffle unsold
   const shuffled = [...AUC.unsoldPlayers];
@@ -12982,17 +13022,22 @@ function aucConfirmReset() {
 function aucShowCustomBid(teamIdx, currentBid, purse) {
   const body = `<div class="fb-field">
     <label class="fb-label">Custom ELO Bid (current: ⚡${currentBid})</label>
-    <input class="fb-input" id="customBidInput" type="number" min="${currentBid+1}" max="${purse}" placeholder="Enter amount…" style="font-size:18px;font-weight:700">
+    <input class="fb-input" id="customBidInput" type="number" min="${currentBid+1}" max="${purse}" placeholder="Enter amount…" style="font-size:18px;font-weight:700"
+      data-team="${teamIdx}" data-min="${currentBid}" data-max="${purse}">
     <div style="font-size:11px;color:var(--text3);margin-top:4px">Max: ⚡${purse} · Must be higher than ⚡${currentBid}</div>
   </div>
   <div style="display:flex;gap:8px;margin-top:12px">
     <button class="btn btn-outline" style="flex:1" onclick="closeModal()">Cancel</button>
-    <button class="btn btn-gold" style="flex:1" onclick="
-      const v=+document.getElementById('customBidInput').value;
-      if(!v||v<=${currentBid}){fbToast('Must be higher than ⚡${currentBid}','error');return;}
-      if(v>${purse}){fbToast('Exceeds purse ⚡${purse}','error');return;}
-      closeModal();aucBidIPL(${teamIdx},v)
-    ">🔨 Bid</button>
+    <button class="btn btn-gold" style="flex:1" onclick="(function(){
+      const inp=document.getElementById('customBidInput');
+      const v=+inp.value;
+      const mn=+inp.dataset.min;
+      const mx=+inp.dataset.max;
+      const ti=+inp.dataset.team;
+      if(!v||v<=mn){fbToast('Must be higher than ⚡'+mn,'error');return;}
+      if(v>mx){fbToast('Exceeds purse ⚡'+mx,'error');return;}
+      closeModal();aucBidIPL(ti,v);
+    })()">🔨 Bid</button>
   </div>`;
   showModal(modal(`💬 Custom Bid — ${escHtml(S.teams[teamIdx])}`, body));
 }
