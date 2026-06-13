@@ -2748,6 +2748,12 @@ html[data-theme="dark"] .team-standing-card{
 @keyframes confetti-fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
 
 .auc-wrap{max-width:820px;margin:0 auto}
+.auc-live-grid{display:grid;grid-template-columns:1fr;gap:14px}
+.auc-live-left,.auc-live-right{min-width:0}
+@media(min-width:900px){
+  .auc-wrap{max-width:1100px}
+  .auc-live-grid{grid-template-columns:1.4fr 1fr;align-items:start}
+}
 .auc-status-bar{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:10px;margin-bottom:12px;font-size:12px;font-weight:700;font-family:var(--head);letter-spacing:.8px;border:1px solid}
 .auc-status-idle{background:rgba(71,85,105,0.15);color:var(--text3);border-color:var(--border)}
 .auc-status-active{background:rgba(245,158,11,0.12);color:var(--gold);border-color:rgba(245,158,11,0.4);animation:auc-glow 2s ease-in-out infinite}
@@ -8206,7 +8212,7 @@ function renderPairings(){
     backdrop-filter:blur(14px);
     box-shadow:0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
   }
-  .prnd-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+  .prnd-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;}
   .prnd-round-badge{
     background:linear-gradient(135deg,rgba(139,92,246,0.18),rgba(251,191,36,0.10));
     border:1.5px solid rgba(251,191,36,0.4);
@@ -8218,7 +8224,7 @@ function renderPairings(){
     text-shadow:0 0 12px rgba(251,191,36,0.5);
   }
   .prnd-meta{font-size:12px;color:var(--pr-text2);font-family:var(--mono);margin-top:2px;letter-spacing:.5px}
-  .prnd-primary-btns{display:flex;gap:7px;flex-wrap:wrap;align-items:center;}
+  .prnd-primary-btns{display:flex;gap:7px;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-shrink:1;min-width:0;}
   .prnd-btn{
     display:inline-flex;align-items:center;justify-content:center;gap:6px;
     height:50px;border-radius:14px;padding:0 16px;
@@ -8442,7 +8448,7 @@ function renderPairings(){
   </style>`;
 
   const ctrlBar=_drawerCss+`<div class="prnd-header">
-    <div style="display:flex;align-items:center;gap:10px">
+    <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
       <div class="prnd-round-badge"><span>⚔</span><span>Round ${S.round}</span></div>
       <div class="prnd-meta">${S.pairings.filter(p=>!p.isCaptainMatch||p.isCaptainMatch).length} Matches · ${S.pairings.filter(m=>m.result!=='*').length} Done</div>
     </div>
@@ -13616,6 +13622,7 @@ function _renderAuctionPageInner() {
 // ── LIVE TAB — IPL version ─────────────────────────────────────────
 function _renderAucLiveIPL(cp, pool, myTeams, isAdmin, isActive) {
   let html = '';
+  html += `<div class="auc-live-grid"><div class="auc-live-left">`;
 
   // MVP tracker
   if (AUC.mvp) {
@@ -13656,6 +13663,26 @@ function _renderAucLiveIPL(cp, pool, myTeams, isAdmin, isActive) {
         ${cp.country ? `<span style="font-size:13px">${cp.country}</span>` : ''}
       </div>
       ${wl ? `<div style="font-size:11px;color:var(--text3);margin-bottom:8px">${wl} · ${cp.gamesPlayed||0} games</div>` : ''}
+      ${!isSold ? `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0;text-align:center">
+        <div>
+          <div style="font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px">Base Price</div>
+          <div style="font-family:var(--head);font-weight:800;font-size:16px">⚡${(cp.basePrice||800).toLocaleString()}</div>
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px">Current Bid</div>
+          <div style="font-family:var(--head);font-weight:800;font-size:18px;color:var(--gold)">⚡${(AUC.currentBid||cp.basePrice||800).toLocaleString()}</div>
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px">Bid Increment</div>
+          <div style="font-family:var(--head);font-weight:800;font-size:16px">⚡${(AUC.bidIncrement||100).toLocaleString()}</div>
+        </div>
+      </div>
+      ${AUC.currentBid > 0 ? `<div style="display:flex;align-items:center;justify-content:center;gap:14px;padding-top:10px;border-top:1px solid var(--border);margin-bottom:4px">
+        <div style="text-align:center">
+          <div style="font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px">Highest Bidder</div>
+          <div style="font-weight:800;font-size:13px;color:${TEAM_C_GET(AUC.currentBidTeam)}">${escHtml(S.teams[AUC.currentBidTeam]||'')}</div>
+        </div>
+      </div>` : ''}` : ''}
       ${isSold ? `<div class="auc-sold-banner">
         <div class="auc-sold-text">SOLD!</div>
         <div style="color:${TEAM_C_GET(isSold.teamIdx)};font-family:var(--head);font-size:20px;font-weight:800;margin-top:6px">${escHtml(S.teams[isSold.teamIdx]||'Team'+(isSold.teamIdx+1))}</div>
@@ -13784,6 +13811,8 @@ function _renderAucLiveIPL(cp, pool, myTeams, isAdmin, isActive) {
     <button class="btn btn-gold btn-sm" style="width:100%;margin-bottom:8px" onclick="aucShowRecap()">📊 Full Recap</button>`;
   }
 
+  html += `</div><div class="auc-live-right">`;
+
   // ── Bid controls — multi-captain support ──────────────────────────
   if (isActive && cp && !AUC.soldPlayers[String(cp.id)]) {
     if (AUC.currentBiddingMode === 'blind') {
@@ -13824,6 +13853,8 @@ function _renderAucLiveIPL(cp, pool, myTeams, isAdmin, isActive) {
   });
   html += `</div>`;
 
+  html += `</div></div>`; // close auc-live-right + auc-live-grid
+
   // ── Unsold pool (show if any)
   if (AUC.unsoldPlayers.length > 0) {
     html += `<div style="margin-top:8px">
@@ -13858,44 +13889,48 @@ function _renderOpenBidControls(cp, myTeams, isAdmin) {
     const isDisabled = aucTeamRoster(ti).length >= 10;
     const myRole = aucGetMyRole(ti);
     const tc = TEAM_C_GET(ti);
-    const increments = [50, 100, 200, 500, 1000];
+    const increments = [50, 100, 200, 500];
     const isLeading = AUC.currentBidTeam === ti;
+    const nextBid = base + 100;
 
     html += `<div class="auc-my-team-card" style="border-color:${tc}66;--team-color:${tc}">
       <div style="position:absolute;top:0;left:0;right:0;height:3px;background:${tc}"></div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-        <div style="width:10px;height:10px;border-radius:50%;background:${tc};flex-shrink:0"></div>
-        <div style="font-family:var(--head);font-weight:800;font-size:15px;color:${tc}">${escHtml(S.teams[ti])}</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <div style="font-family:var(--head);font-size:11px;font-weight:800;letter-spacing:1.5px;color:var(--text3);text-transform:uppercase">🔨 Place Your Bid</div>
+        <div style="width:8px;height:8px;border-radius:50%;background:${tc};flex-shrink:0;margin-left:auto"></div>
+        <div style="font-family:var(--head);font-weight:800;font-size:13px;color:${tc}">${escHtml(S.teams[ti])}</div>
         ${myRole ? aucRoleBadge(myRole) : ''}
-        ${isLeading ? `<span style="margin-left:auto;font-size:10px;color:var(--gold);font-weight:700">● LEADING BID</span>` : ''}
+        ${isLeading ? `<span style="font-size:10px;color:var(--gold);font-weight:700">● LEADING</span>` : ''}
       </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <div>
-          <div style="font-size:10px;color:var(--text3)">ELO PURSE</div>
-          <div class="auc-elo-badge">⚡${purse}</div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-size:10px;color:var(--text3)">ROSTER</div>
-          <div style="font-weight:700;font-size:13px">${aucTeamRoster(ti).length}/10</div>
-        </div>
-      </div>
+
       ${isDisabled ? `<div style="text-align:center;color:var(--text3);font-size:13px;padding:12px;background:var(--bg3);border-radius:8px">🔒 Roster Full (10/10)</div>` : `
-        <div class="auc-increment-grid" style="grid-template-columns:repeat(5,1fr)">
+        <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:14px;text-align:center;margin-bottom:10px">
+          <div class="auc-elo-badge" style="font-size:28px;padding:6px 16px">⚡${nextBid.toLocaleString()}</div>
+        </div>
+
+        <div class="auc-increment-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:10px">
           ${increments.map(inc => {
-            const newBid = base + inc;
-            const canAfford = newBid <= purse;
-            return `<button class="auc-inc-btn" onclick="aucBidIPL(${ti},${newBid})" ${!canAfford?'disabled':''}>
-              +${inc}<br><span style="font-size:9px;opacity:.7">⚡${newBid}</span>
+            const isSel = inc === 100;
+            return `<button class="auc-inc-btn${isSel?' selected':''}" onclick="aucBidIPL(${ti},${base+inc})" ${(base+inc)>purse?'disabled':''}>
+              +${inc}
             </button>`;
           }).join('')}
         </div>
-        <button class="auc-bid-btn" onclick="aucBidIPL(${ti},${base+100})" ${(base+100)>purse?'disabled':''} style="margin-top:8px">
-          🔨 BID ⚡${base+100} ELO
+
+        <button class="auc-bid-btn" onclick="aucBidIPL(${ti},${nextBid})" ${nextBid>purse?'disabled':''} style="margin-bottom:8px">
+          RAISE BID
         </button>
-        <button class="auc-inc-btn" onclick="aucShowCustomBid(${ti},${base},${purse})" style="width:100%;margin-top:6px;grid-column:unset">
-          💬 Custom Bid
-        </button>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+          <button class="btn btn-outline btn-sm" style="justify-content:center" onclick="aucShowCustomBid(${ti},${base},${purse})">PASS</button>
+          ${isAdmin ? `<button class="btn btn-red btn-sm" style="justify-content:center" onclick="aucMarkUnsold && aucMarkUnsold()">END AUCTION</button>` : `<button class="btn btn-outline btn-sm" style="justify-content:center" onclick="aucShowCustomBid(${ti},${base},${purse})">💬 Custom</button>`}
+        </div>
       `}
+
+      <div style="display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--text3)">
+        <span>YOUR PURSE</span>
+        <span class="auc-elo-badge" style="font-size:13px">⚡${purse.toLocaleString()}</span>
+      </div>
     </div>`;
   });
   return html;
