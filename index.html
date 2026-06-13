@@ -8206,7 +8206,7 @@ function renderPairings(){
     backdrop-filter:blur(14px);
     box-shadow:0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
   }
-  .prnd-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+  .prnd-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;}
   .prnd-round-badge{
     background:linear-gradient(135deg,rgba(139,92,246,0.18),rgba(251,191,36,0.10));
     border:1.5px solid rgba(251,191,36,0.4);
@@ -8218,7 +8218,7 @@ function renderPairings(){
     text-shadow:0 0 12px rgba(251,191,36,0.5);
   }
   .prnd-meta{font-size:12px;color:var(--pr-text2);font-family:var(--mono);margin-top:2px;letter-spacing:.5px}
-  .prnd-primary-btns{display:flex;gap:7px;flex-wrap:wrap;align-items:center;}
+  .prnd-primary-btns{display:flex;gap:7px;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-shrink:1;min-width:0;}
   .prnd-btn{
     display:inline-flex;align-items:center;justify-content:center;gap:6px;
     height:50px;border-radius:14px;padding:0 16px;
@@ -8442,7 +8442,7 @@ function renderPairings(){
   </style>`;
 
   const ctrlBar=_drawerCss+`<div class="prnd-header">
-    <div style="display:flex;align-items:center;gap:10px">
+    <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
       <div class="prnd-round-badge"><span>⚔</span><span>Round ${S.round}</span></div>
       <div class="prnd-meta">${S.pairings.filter(p=>!p.isCaptainMatch||p.isCaptainMatch).length} Matches · ${S.pairings.filter(m=>m.result!=='*').length} Done</div>
     </div>
