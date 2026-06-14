@@ -8211,7 +8211,7 @@ function updateMatchStatus(matchId,status){
 }
 
 function setMatchResult(matchId,result){
-  setState(s=>({...s,pairings:s.pairings.map(p=>p.id===matchId?{...p,result}:p)}));
+  applyPairingResult(matchId,result);
   if(result!=='*') showBanner(`Result set: ${result}`,'ok');
 }
 
@@ -8266,6 +8266,40 @@ function _pairingTabBar(pairings){
     return `<button class="tier-pill" onclick="pairingsTierFilter='${t.key}';renderPage('pairings')" style="border-color:${borderColor};background:${bg};color:${fg};${glow}">${t.icon?t.icon+' ':''}${t.label}${countBadge}</button>`;
   }).join('');
   return `<div class="tier-pills">${pills}</div>`;
+}
+
+// ── Sticky Stream Scoreboard (Stream Mode Requirement) ──
+// Stable markup with fixed element IDs so result updates can patch
+// this in place (no innerHTML replacement of the whole pairings page).
+function renderStickyScoreboard(){
+  const t0=teamScore(0), t1=teamScore(1);
+  const leading0=t0>t1, leading1=t1>t0;
+  const done=S.pairings.filter(m=>m.result!=='*').length;
+  const total=S.pairings.length;
+  const isLiveRound=total>0&&done<total;
+  return `<div class="pr-glow-border pr-sticky-scoreboard" id="prStickyScoreboard">
+    <div class="pr-stk-team pr-stk-left">
+      ${getCaptain(0)?playerAva(getCaptain(0),40):'<div style="width:40px;height:40px;border-radius:50%;background:'+TEAM_C[0]+'22;border:2px solid '+TEAM_C[0]+';flex-shrink:0"></div>'}
+      <div class="pr-stk-name" style="color:${TEAM_C[0]}">${escHtml(S.teams[0])}</div>
+    </div>
+    <div class="pr-stk-center">
+      <div class="pr-stk-score-row">
+        <span class="pr-stk-score" id="prStkScore0" data-score="${t0}" style="color:${leading0?TEAM_C[0]:'var(--pr-text)'}">${t0}</span>
+        <span class="pr-stk-vs">—</span>
+        <span class="pr-stk-score" id="prStkScore1" data-score="${t1}" style="color:${leading1?TEAM_C[1]:'var(--pr-text)'}">${t1}</span>
+      </div>
+      <div class="pr-stk-meta">
+        <span class="pr-stk-meta-item">Round <b id="prStkRound">${S.round}</b></span>
+        <span class="pr-stk-meta-item">✓ <b id="prStkDone">${done}</b>/<span id="prStkTotal">${total}</span></span>
+        <span class="pr-stk-meta-item">⏳ <b id="prStkRemaining">${total-done}</b></span>
+        <span class="pr-stk-meta-item" id="prStkLiveWrap" style="${isLiveRound?'':'display:none'}"><span class="pr-live-dot"></span> LIVE</span>
+      </div>
+    </div>
+    <div class="pr-stk-team pr-stk-right">
+      <div class="pr-stk-name" style="color:${TEAM_C[1]}">${escHtml(S.teams[1])}</div>
+      ${getCaptain(1)?playerAva(getCaptain(1),40):'<div style="width:40px;height:40px;border-radius:50%;background:'+TEAM_C[1]+'22;border:2px solid '+TEAM_C[1]+';flex-shrink:0"></div>'}
+    </div>
+  </div>`;
 }
 
 function renderPairings(){
@@ -8412,6 +8446,43 @@ function renderPairings(){
     box-shadow:0 0 8px var(--pr-green);animation:pr-pulse 1.4s ease-in-out infinite;
   }
   @keyframes pr-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(0.7)}}
+  /* ── Sticky Stream Scoreboard (Bug Fix + Stream Mode Requirement) ── */
+  .pr-sticky-scoreboard{
+    position:sticky;top:0;z-index:30;
+    display:flex;align-items:center;gap:10px;
+    padding:10px 14px;margin-bottom:14px;border-radius:16px;
+    background:rgba(8,12,28,0.72);
+    border:1px solid var(--pr-glass-border);
+    backdrop-filter:blur(18px) saturate(140%);
+    -webkit-backdrop-filter:blur(18px) saturate(140%);
+    box-shadow:0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  html[data-theme="light"] .pr-sticky-scoreboard{
+    background:rgba(255,255,255,0.72);
+  }
+  .pr-stk-team{flex:1;display:flex;align-items:center;gap:10px;min-width:0}
+  .pr-stk-team.pr-stk-right{justify-content:flex-end;text-align:right}
+  .pr-stk-name{
+    font-family:var(--head);font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+    font-size:clamp(12px,3vw,18px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .pr-stk-center{flex-shrink:0;text-align:center;padding:0 8px;display:flex;flex-direction:column;align-items:center;gap:4px}
+  .pr-stk-score-row{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-weight:800;letter-spacing:1px;line-height:1}
+  .pr-stk-score{font-size:clamp(28px,9vw,56px);transition:color .2s ease}
+  .pr-stk-vs{font-size:clamp(14px,4vw,22px);color:var(--pr-text2)}
+  .pr-stk-meta{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;font-size:clamp(9px,2vw,12px);font-family:var(--mono);color:var(--pr-text2);letter-spacing:1px;text-transform:uppercase}
+  .pr-stk-meta-item{display:flex;align-items:center;gap:4px;white-space:nowrap}
+  .pr-stk-score.pr-score-bump{animation:pr-score-bump .45s ease}
+  @keyframes pr-score-bump{
+    0%{transform:scale(1)}
+    35%{transform:scale(1.28);text-shadow:0 0 24px currentColor}
+    100%{transform:scale(1)}
+  }
+  /* ── Uniform board card sizing ── */
+  .pr-card{min-height:172px;display:flex;flex-direction:column;justify-content:space-between}
+  /* ── Locked / completed result select ── */
+  .pairing-result[disabled]{opacity:.85;cursor:not-allowed;-webkit-text-fill-color:currentColor}
+  .pr-status-locked{background:rgba(251,191,36,0.16);border:1px solid rgba(251,191,36,0.5);color:var(--pr-gold)}
   .pr-captain-card{
     border-radius:22px;padding:20px 18px 14px;position:relative;overflow:hidden;margin-bottom:14px;
     background:radial-gradient(ellipse at 50% -20%,rgba(251,191,36,0.12),transparent 60%), var(--pr-glass);
@@ -8597,11 +8668,11 @@ function renderPairings(){
     </div>
     <div style="flex-shrink:0;text-align:center;padding:0 14px">
       <div class="pr-hero-score" style="font-size:clamp(32px,8vw,48px)">
-        <span style="color:${leading0?TEAM_C[0]:'var(--pr-text)'}">${t0}</span>
+        <span id="prHeroScore0" style="color:${leading0?TEAM_C[0]:'var(--pr-text)'}">${t0}</span>
         <span style="color:var(--pr-text2);font-size:clamp(20px,5vw,28px);margin:0 6px">—</span>
-        <span style="color:${leading1?TEAM_C[1]:'var(--pr-text)'}">${t1}</span>
+        <span id="prHeroScore1" style="color:${leading1?TEAM_C[1]:'var(--pr-text)'}">${t1}</span>
       </div>
-      <div style="font-size:10px;color:var(--pr-text2);letter-spacing:2px;font-family:var(--mono);margin-top:4px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:6px">
+      <div style="font-size:10px;color:var(--pr-text2);letter-spacing:2px;font-family:var(--mono);margin-top:4px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:6px" id="prHeroLiveWrap">
         ${isLiveRound?`<span class="pr-live-dot"></span>`:''}Live Score
       </div>
     </div>
@@ -8614,10 +8685,10 @@ function renderPairings(){
     </div>
   </div>`;
 
-  let html=`<div class="pr-arena">`+ctrlBar+crossWarning+scrubberHtml+_pairingTabBar(S.pairings)+stickyBar+`<div class="flex jb ic mb6 wrap gap8">
-    <div class="fs13 c3">${done}/${total} done</div>
+  let html=`<div class="pr-arena">`+renderStickyScoreboard()+ctrlBar+crossWarning+scrubberHtml+_pairingTabBar(S.pairings)+stickyBar+`<div class="flex jb ic mb6 wrap gap8">
+    <div class="fs13 c3" id="prDoneCounter">${done}/${total} done</div>
   </div>
-  <div class="mb10">${progBar(done,total)}</div>`;
+  <div class="mb10" id="prProgBarWrap">${progBar(done,total)}</div>`;
 
   // Captain Match — centered purple tier header, same card style as tiers
   const captainMatch=S.pairings.find(m=>m.isCaptainMatch);
@@ -8704,12 +8775,12 @@ function renderPairings(){
       const bTeamColor=TEAM_C_GET(ownerTeam(m.black));
       const wFade=winnerIsBlack?'opacity:.6':'';
       const bFade=winnerIsWhite?'opacity:.6':'';
-      const statusBadge=isDone?`<div class="pr-status-badge pr-status-done">✓ DONE</div>`:isLiveM?`<div class="pr-status-badge pr-status-live"><span class="pr-live-dot"></span>LIVE</div>`:`<div class="pr-status-badge pr-status-pending">PENDING</div>`;
-      html+=`<div class="pr-card" style="${sameTeam?'border-color:rgba(239,68,68,0.5);box-shadow:0 0 18px rgba(239,68,68,0.15)':''}${isDone?';box-shadow:0 0 18px '+rc+'22':''}">
+      const statusBadge=isDone?`<div class="pr-status-badge pr-status-done" data-status-badge="${m.id}">✓ DONE</div>`:isLiveM?`<div class="pr-status-badge pr-status-live" data-status-badge="${m.id}"><span class="pr-live-dot"></span>LIVE</div>`:`<div class="pr-status-badge pr-status-pending" data-status-badge="${m.id}">PENDING</div>`;
+      html+=`<div class="pr-card" data-board-card="${m.id}" style="${sameTeam?'border-color:rgba(239,68,68,0.5);box-shadow:0 0 18px rgba(239,68,68,0.15)':''}${isDone?';box-shadow:0 0 18px '+rc+'22':''}">
         <div class="pr-card-badge">BOARD ${m.board}</div>
         ${statusBadge}
         <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin-top:22px">
-          <div style="min-width:0;display:flex;align-items:center;gap:8px;${wFade}">
+          <div style="min-width:0;display:flex;align-items:center;gap:8px;${wFade}" data-side="white">
             ${playerAva(m.white,48)}
             <div style="min-width:0">
               <div style="display:flex;align-items:center;gap:2px;flex-wrap:wrap"><div style="font-family:var(--head);font-weight:700;font-size:clamp(13px,3vw,16px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:${wTeamColor};line-height:1.2">${escHtml(m.white.name)}</div>${wTierBadge}</div>
@@ -8717,14 +8788,14 @@ function renderPairings(){
             </div>
           </div>
           <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;min-width:76px">
-            ${resultPill}
+            <div data-result-pill="${m.id}">${resultPill}</div>
             <div class="pr-vs">VS</div>
-            <select data-pid="${m.id}" class="pairing-result" style="width:70px;padding:4px 2px;font-size:12px;font-weight:700;text-align:center;color:${rc};background:rgba(255,255,255,0.04);border:1px solid ${rc==='var(--pr-text2)'?'var(--pr-glass-border)':rc};border-radius:8px">
+            <select data-pid="${m.id}" class="pairing-result" ${isDone?'disabled':''} style="width:70px;padding:4px 2px;font-size:12px;font-weight:700;text-align:center;color:${rc};background:rgba(255,255,255,0.04);border:1px solid ${rc==='var(--pr-text2)'?'var(--pr-glass-border)':rc};border-radius:8px">
               ${RESULTS.map(r=>`<option value="${r}"${m.result===r?' selected':''}>${r}</option>`).join('')}
             </select>
             ${showSwapBtn?`<button class="btn btn-xs btn-outline" onclick="swapColors('${m.id}')" title="Swap colors" style="padding:2px 6px;font-size:10px">⇄</button>`:''}
           </div>
-          <div style="min-width:0;text-align:right;display:flex;align-items:center;justify-content:flex-end;gap:8px;${bFade}">
+          <div style="min-width:0;text-align:right;display:flex;align-items:center;justify-content:flex-end;gap:8px;${bFade}" data-side="black">
             <div style="min-width:0">
               <div style="display:flex;align-items:center;justify-content:flex-end;gap:2px;flex-wrap:wrap">${bTierBadge}<div style="font-family:var(--head);font-weight:700;font-size:clamp(13px,3vw,16px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;color:${bTeamColor};line-height:1.2">${escHtml(m.black.name)}</div></div>
               <div style="font-size:11px;text-align:right;margin-top:2px;color:var(--pr-text2)">ELO <span style="color:var(--pr-gold);font-weight:700">${m.black.rating}</span></div>
@@ -8742,9 +8813,9 @@ function renderPairings(){
           </div>
           <div class="pr-live-clock" data-clock="b">10:00</div>
         </div>`:''}
-        <div style="display:flex;gap:6px;margin-top:10px;justify-content:center">
-          ${(window.fbIsAdmin && window.fbIsAdmin()) || !window.fbIsAdmin ? `<button class="btn btn-xs btn-green" data-start-match="${m.id}" onclick="showStartMatchModal('${m.id}')">▶ Start Match</button>` : ''}
-          ${isDone?`<span style="font-family:var(--head);font-size:12px;font-weight:700;color:${rc};background:${rc}18;border:1px solid ${rc}44;border-radius:5px;padding:2px 10px">Result: ${m.result}</span>`:''}
+        <div style="display:flex;gap:6px;margin-top:10px;justify-content:center" data-action-row="${m.id}">
+          ${(window.fbIsAdmin && window.fbIsAdmin()) || !window.fbIsAdmin ? `<button class="btn btn-xs btn-green" data-start-match="${m.id}" onclick="showStartMatchModal('${m.id}')" style="${isDone?'display:none':''}">▶ Start Match</button>` : ''}
+          <span data-result-label="${m.id}" style="font-family:var(--head);font-size:12px;font-weight:700;color:${rc};background:${rc}18;border:1px solid ${rc}44;border-radius:5px;padding:2px 10px;${isDone?'':'display:none'}">Result: ${m.result}</span>
         </div>
       </div>`;
     });
@@ -8758,14 +8829,14 @@ function renderPairings(){
   html+=`<div class="pr-analytics-grid">
     <div class="pr-acard" style="--pr-acc:rgba(251,191,36,0.4)"><div class="pr-acard-icon">👥</div><div class="pr-acard-num">${activePlayers.length}</div><div class="pr-acard-lbl">Total Players</div></div>
     <div class="pr-acard" style="--pr-acc:rgba(59,130,246,0.4)"><div class="pr-acard-icon">📈</div><div class="pr-acard-num">${avgElo}</div><div class="pr-acard-lbl">Average ELO</div></div>
-    <div class="pr-acard" style="--pr-acc:rgba(139,92,246,0.4)"><div class="pr-acard-icon">◎</div><div class="pr-acard-num">${compPct}%</div><div class="pr-acard-lbl">Round Completion</div></div>
-    <div class="pr-acard" style="--pr-acc:rgba(34,197,94,0.4)"><div class="pr-acard-icon">⏳</div><div class="pr-acard-num">${total-done}</div><div class="pr-acard-lbl">Remaining Matches</div></div>
-    <div class="pr-acard" style="--pr-acc:rgba(251,191,36,0.4);grid-column:span 2"><div class="pr-acard-icon">🏆</div><div class="pr-acard-num"><span style="color:${TEAM_C[0]}">${t0}</span> <span style="color:var(--pr-text2);font-size:16px">—</span> <span style="color:${TEAM_C[1]}">${t1}</span></div><div class="pr-acard-lbl">Team Scores</div></div>
-    <div class="pr-acard" style="--pr-acc:rgba(34,197,94,0.5);grid-column:span 2"><div class="pr-acard-icon">💓</div><div class="pr-acard-num" style="color:${liveBoards?'var(--pr-green)':'var(--pr-text)'}">${liveBoards}</div><div class="pr-acard-lbl">Live Boards</div></div>
+    <div class="pr-acard" style="--pr-acc:rgba(139,92,246,0.4)"><div class="pr-acard-icon">◎</div><div class="pr-acard-num count-anim" id="prAcardCompPct">${compPct}%</div><div class="pr-acard-lbl">Round Completion</div></div>
+    <div class="pr-acard" style="--pr-acc:rgba(34,197,94,0.4)"><div class="pr-acard-icon">⏳</div><div class="pr-acard-num count-anim" id="prAcardRemaining">${total-done}</div><div class="pr-acard-lbl">Remaining Matches</div></div>
+    <div class="pr-acard" style="--pr-acc:rgba(251,191,36,0.4);grid-column:span 2"><div class="pr-acard-icon">🏆</div><div class="pr-acard-num" id="prAcardTeamScores"><span style="color:${TEAM_C[0]}">${t0}</span> <span style="color:var(--pr-text2);font-size:16px">—</span> <span style="color:${TEAM_C[1]}">${t1}</span></div><div class="pr-acard-lbl">Team Scores</div></div>
+    <div class="pr-acard" style="--pr-acc:rgba(34,197,94,0.5);grid-column:span 2"><div class="pr-acard-icon">💓</div><div class="pr-acard-num count-anim" id="prAcardLiveBoards" style="color:${liveBoards?'var(--pr-green)':'var(--pr-text)'}">${liveBoards}</div><div class="pr-acard-lbl">Live Boards</div></div>
   </div>`;
 
   // Match count footer
-  html+=`<div style="text-align:center;padding:16px 0 8px;font-family:var(--mono);font-size:12px;color:var(--pr-text2);letter-spacing:1px">
+  html+=`<div style="text-align:center;padding:16px 0 8px;font-family:var(--mono);font-size:12px;color:var(--pr-text2);letter-spacing:1px" id="prFooterCount">
     ${done} / ${total} complete · Round ${S.round}
   </div>`;
 
@@ -8787,12 +8858,151 @@ function showRoundScrubModal(idx){
     <div class="mt10 flex gap8"><button class="btn btn-outline" onclick="closeModal()">Close</button></div>`;
   showModal(modal(`📜 Round ${idx+1} Results`,body));
 }
+// ═══════════════════════════════════════════════════════
+//  RESULT-ONLY UPDATE PATH (Bug Fix #1 & #2)
+//  Updating a match result must NEVER trigger a full
+//  renderPairings()/innerHTML rebuild of the pairings page.
+//  It only mutates state + patches the specific DOM nodes that
+//  represent: match result, team score, round completion %,
+//  remaining matches, and the live/sticky scoreboard.
+// ═══════════════════════════════════════════════════════
+function applyPairingResult(id,result){
+  // Mutate state directly (no setState/render — avoids full page rebuild)
+  S=(s=>{
+    if(s.pairings&&s.players){
+      const activeIds=new Set(s.players.filter(p=>!p.deleted).map(p=>p.id));
+      return {...s,pairings:s.pairings.map(p=>p.id===id?{...p,result}:p).filter(m=>activeIds.has(m.white.id)&&activeIds.has(m.black.id))};
+    }
+    return {...s,pairings:s.pairings.map(p=>p.id===id?{...p,result}:p)};
+  })(S);
+  saveState();
+  patchPairingsLive(id);
+}
+
+function patchPairingsLive(changedId){
+  const done=S.pairings.filter(m=>m.result!=='*').length;
+  const total=S.pairings.length;
+  const t0=teamScore(0), t1=teamScore(1);
+  const leading0=t0>t1, leading1=t1>t0;
+  const liveBoards=S.pairings.filter(m=>m.result==='*').length;
+  const compPct=total?Math.round(done/total*100):0;
+  const isLiveRound=total>0&&done<total;
+
+  const bump=el=>{ if(!el) return; el.classList.remove('pr-score-bump'); void el.offsetWidth; el.classList.add('pr-score-bump'); };
+  const setScore=(el,val,color)=>{
+    if(!el) return;
+    const changed=el.dataset.score!==String(val);
+    el.textContent=val;
+    el.dataset.score=val;
+    if(color!==undefined) el.style.color=color;
+    if(changed) bump(el);
+  };
+
+  // Sticky scoreboard
+  setScore(document.getElementById('prStkScore0'),t0,leading0?TEAM_C[0]:'var(--pr-text)');
+  setScore(document.getElementById('prStkScore1'),t1,leading1?TEAM_C[1]:'var(--pr-text)');
+  const stkDone=document.getElementById('prStkDone'); if(stkDone) stkDone.textContent=done;
+  const stkTotal=document.getElementById('prStkTotal'); if(stkTotal) stkTotal.textContent=total;
+  const stkRemaining=document.getElementById('prStkRemaining'); if(stkRemaining) stkRemaining.textContent=total-done;
+  const stkLiveWrap=document.getElementById('prStkLiveWrap'); if(stkLiveWrap) stkLiveWrap.style.display=isLiveRound?'':'none';
+
+  // Captain hero live score
+  const hero0=document.getElementById('prHeroScore0'); if(hero0) { hero0.textContent=t0; hero0.style.color=leading0?TEAM_C[0]:'var(--pr-text)'; bump(hero0); }
+  const hero1=document.getElementById('prHeroScore1'); if(hero1) { hero1.textContent=t1; hero1.style.color=leading1?TEAM_C[1]:'var(--pr-text)'; bump(hero1); }
+  const heroLiveWrap=document.getElementById('prHeroLiveWrap');
+  if(heroLiveWrap) heroLiveWrap.innerHTML=(isLiveRound?`<span class="pr-live-dot"></span>`:'')+'Live Score';
+
+  // Round completion % / remaining matches / done counter / progress bar
+  const doneCounter=document.getElementById('prDoneCounter'); if(doneCounter) doneCounter.textContent=`${done}/${total} done`;
+  const progFill=document.querySelector('#prProgBarWrap .prog-fill'); if(progFill) progFill.style.width=(total?Math.round(done/total*100):0)+'%';
+  const acardComp=document.getElementById('prAcardCompPct'); if(acardComp){acardComp.textContent=compPct+'%';acardComp.classList.remove('count-anim');void acardComp.offsetWidth;acardComp.classList.add('count-anim');}
+  const acardRemaining=document.getElementById('prAcardRemaining'); if(acardRemaining){acardRemaining.textContent=total-done;acardRemaining.classList.remove('count-anim');void acardRemaining.offsetWidth;acardRemaining.classList.add('count-anim');}
+  const acardTeamScores=document.getElementById('prAcardTeamScores'); if(acardTeamScores) acardTeamScores.innerHTML=`<span style="color:${TEAM_C[0]}">${t0}</span> <span style="color:var(--pr-text2);font-size:16px">—</span> <span style="color:${TEAM_C[1]}">${t1}</span>`;
+  const acardLive=document.getElementById('prAcardLiveBoards'); if(acardLive){acardLive.textContent=liveBoards;acardLive.style.color=liveBoards?'var(--pr-green)':'var(--pr-text)';acardLive.classList.remove('count-anim');void acardLive.offsetWidth;acardLive.classList.add('count-anim');}
+  const footer=document.getElementById('prFooterCount'); if(footer) footer.textContent=`${done} / ${total} complete · Round ${S.round}`;
+
+  // Banner (top-of-app team chips)
+  const banner=document.getElementById('banner');
+  if(banner){
+    const chips=banner.querySelectorAll('.team-chip .team-score');
+    if(chips[0]) chips[0].textContent=t0;
+    if(chips[1]) chips[1].textContent=t1;
+    const info=banner.querySelector('.banner-info');
+    if(info){
+      const allM=[...S.rounds.flat(),...S.pairings];
+      info.textContent=`Rd ${S.round} · ${S.players.length}p · ${allM.filter(m=>m.result!=='*').length}/${allM.length}`;
+    }
+  }
+
+  // The changed board card: result pill, status badge, lock select, result label
+  if(changedId){
+    const m=S.pairings.find(p=>p.id===changedId);
+    if(m){
+      const isDone=m.result!=='*';
+      const rc=m.result==='1-0'?'var(--pr-green)':m.result==='0-1'?'var(--pr-red)':m.result==='½-½'?'var(--pr-gold)':'var(--pr-text2)';
+      const card=document.querySelector(`[data-board-card="${m.id}"]`);
+      if(card){
+        const isCaptain=!!m.isCaptainMatch;
+        // Result pill
+        const pillWrap=card.querySelector(`[data-result-pill="${m.id}"]`);
+        if(pillWrap){
+          if(isDone){
+            const label=m.result==='1-0'?'♔ 1-0':m.result==='0-1'?'♚ 0-1':'½-½';
+            pillWrap.innerHTML=`<div style="font-family:var(--head);font-size:${isCaptain?'14px':'11px'};font-weight:700;color:${rc};background:${rc}18;border:1px solid ${rc}44;border-radius:${isCaptain?'6px':'5px'};padding:${isCaptain?'2px 10px':'1px 7px'};text-align:center">${label}</div>`;
+          } else {
+            pillWrap.innerHTML='';
+          }
+        }
+        // Status badge
+        const badge=card.querySelector(`[data-status-badge="${m.id}"]`);
+        if(badge){
+          if(isDone){
+            badge.className='pr-status-badge pr-status-done';
+            badge.innerHTML='✓ DONE';
+          } else {
+            const isLiveM=(S.matchSessions||[]).some(s=>s.matchId===m.id&&s.status==='in_progress');
+            badge.className='pr-status-badge '+(isLiveM?'pr-status-live':'pr-status-pending');
+            badge.innerHTML=isLiveM?'<span class="pr-live-dot"></span>LIVE':'PENDING';
+          }
+        }
+        // Lock the select + recolor it
+        const sel=card.querySelector(`select.pairing-result[data-pid="${m.id}"]`);
+        if(sel){
+          sel.style.color=rc;
+          sel.style.borderColor=rc==='var(--pr-text2)'?'var(--pr-glass-border)':rc;
+          sel.disabled=isDone;
+        }
+        // Result label / start match button in action row
+        const actionRow=card.querySelector(`[data-action-row="${m.id}"]`);
+        if(actionRow){
+          const label=actionRow.querySelector(`[data-result-label="${m.id}"]`);
+          if(label){
+            if(isDone){
+              label.style.display='';
+              label.style.color=rc; label.style.background=rc+'18'; label.style.borderColor=rc+'44';
+              label.textContent=`Result: ${m.result}`;
+            } else {
+              label.style.display='none';
+            }
+          }
+          const startBtn=actionRow.querySelector(`[data-start-match="${m.id}"]`);
+          if(startBtn) startBtn.style.display=isDone?'none':'';
+        }
+        // Card glow for completion
+        card.style.boxShadow=isDone?`0 0 18px ${rc}22`:'';
+      }
+    }
+  }
+}
+
+
+
 function bindPairings(){
   document.querySelectorAll('.pairing-result').forEach(sel=>{
     sel.addEventListener('change',function(){
       const id=this.dataset.pid;
       const result=this.value;
-      setState(s=>({...s,pairings:s.pairings.map(p=>p.id===id?{...p,result}:p)}));
+      applyPairingResult(id,result);
     });
   });
 
@@ -11428,7 +11638,7 @@ function _showResultsModal(){
     const rc=m.result==='1-0'?'var(--green)':m.result==='0-1'?'var(--red)':m.result==='½-½'?'var(--gold)':'var(--text3)';
     return `<div class="flex ic gap8" style="padding:8px 0;border-bottom:1px solid var(--border);flex-wrap:wrap">
       <span style="font-size:12px;min-width:140px;flex-shrink:0">Bd ${m.board}: ${escHtml(m.white.name.slice(0,10))} v ${escHtml(m.black.name.slice(0,10))}</span>
-      <select onchange="(function(v){setState(s=>({...s,pairings:s.pairings.map(p=>p.id==='${m.id}'?{...p,result:v}:p)}));ctrlLog('RESULT_OVERRIDE','Board ${m.board} → '+v)})(this.value)" style="width:90px;font-size:12px;font-weight:700;color:${rc}">
+      <select onchange="(function(v){applyPairingResult('${m.id}',v);ctrlLog('RESULT_OVERRIDE','Board ${m.board} → '+v)})(this.value)" style="width:90px;font-size:12px;font-weight:700;color:${rc}">
         ${RESULTS.map(r=>`<option value="${r}"${m.result===r?' selected':''}>${r==='*'?'–':r}</option>`).join('')}
       </select>
     </div>`;
@@ -11502,7 +11712,7 @@ function showLiveTracking(){
       <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
         <button class="btn btn-xs btn-green" onclick="closeModal();showStartMatchModal('${m.id}')">▶ Start</button>
         ${sess?`<button class="btn btn-xs btn-outline" style="color:var(--blue);border-color:var(--blue)" onclick="window.open('${sess.challengeUrl}','_blank','noopener')">🎮 Chess.com</button>`:''}
-        <select onchange="(function(v){setState(s=>({...s,pairings:s.pairings.map(p=>p.id==='${m.id}'?{...p,result:v}:p)}));ctrlLog('RESULT','Board ${m.board} → '+v)})(this.value)" style="padding:3px 6px;font-size:11px;font-weight:700;border-radius:6px;background:var(--bg3);border-color:var(--border2);min-height:28px;color:var(--text);margin-left:auto">
+        <select onchange="(function(v){applyPairingResult('${m.id}',v);ctrlLog('RESULT','Board ${m.board} → '+v)})(this.value)" style="padding:3px 6px;font-size:11px;font-weight:700;border-radius:6px;background:var(--bg3);border-color:var(--border2);min-height:28px;color:var(--text);margin-left:auto">
           ${RESULTS.map(r=>`<option value="${r}"${m.result===r?' selected':''}>${r==='*'?'— Result':r}</option>`).join('')}
         </select>
       </div>
